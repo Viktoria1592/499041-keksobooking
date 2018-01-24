@@ -1,7 +1,7 @@
-# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
+﻿# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алина Вишнякова](https://up.htmlacademy.ru/javascript/12/user/499041).
-* Наставник: `Неизвестно`.
+* Наставник: [Ренат Туктаров](https://up.htmlacademy.ru/javascript/12/user/408799).
 
 ---
 
