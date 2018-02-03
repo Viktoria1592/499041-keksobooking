@@ -1,6 +1,6 @@
 'use strict';
 
-document.querySelector('.map')classList.remove('.map--faded');
+document.querySelector('.map').classList.remove('.map--faded');
 
 var TITLES = [
   'Большая уютная квартира',
@@ -61,7 +61,7 @@ var randomMass = function (mass) {
   }
 
   return newMass;
-}
+};
 
 var randomLenght = function (mass) {
   var len = Math.round(mass.length * Math.random());
@@ -74,11 +74,11 @@ var randomLenght = function (mass) {
   }
 
   return newMass;
-}
+};
 
 var randomNumber = function (min, max) {
    return Math.round(Math.random() * (max - min) + min);
-}
+};
 
 var nearbyAds = {
   author: {
@@ -103,17 +103,57 @@ var nearbyAds = {
     x: randomNumber(900, 300),
     y: randomNumber(500, 150)
   }
-}
+};
 
-var renderAds = function (nearbyAds) {
-  var nearbyAdsElement = similarNearbyAdsTemplate.cloneNode(true);
-
-  nearbyAdsElement.querySelector('.map__pins').style.fill = nearbyAds.location.x;
-  return nearbyAdsElement;
-}
+var mapPins = document.querySelector('.map__pins');
 
 var fragment = document.createDocumentFragment();
-fragment.appendChild(renderAds(nearbyAds.offer.address));
-similarListElement.appendChild(fragment);
+
+for (var i = 0; i < 6; i++) {
+  var newElement = document.createElement('button');
+  newElement.style = 'left: ' + (nearbyAds.location.x + 20) + 'px; top: ' + (nearbyAds.location.y + 40) + 'px;';
+  newElement.className = 'map__pin';
+  newElement.innerHTML = '<img src="' + nearbyAds.author.avatar + '" width="40" height="40" draggable="false">';
+
+  fragment.appendChild(newElement);
+}
+
+mapPins.appendChild(fragment);
+
+var similarTemplate = document.querySelector('.map__card popup').content;
+
+var renderPosts = function () {
+  var newPosts = similarTemplate.cloneNode(true);
+  newPosts.className = 'map__card';
+  newPosts.innerHTML = '<h3>' + nearbyAds.offer.title + '</h3>';
+  newPosts.innerHTML = '<p><small>' + nearbyAds.offer.address + '</small></p>';
+  newPosts.innerHTML = '<p class="popup__price">' + nearbyAds.offer.price + '&#x20bd;/ночь</p>';
+  if (nearbyAds.offer.type === 'flat') {
+    newPosts.innerHTML = '<h4>Квартира</h4>';
+  } else if (nearbyAds.offer.type === 'bungalo') {
+    newPosts.innerHTML = '<h4>Бунгало</h4>';
+  } else {
+    newPosts.innerHTML = '<h4>Дом</h4>';
+  }
+  newPosts.innerHTML = '<p>' + nearbyAds.offer.rooms + ' комнаты для ' + nearbyAds.offer.guests + ' гостей </p>';
+  newPosts.innerHTML = '<p>Заезд после ' + nearbyAds.offer.checkin + ', выезд до ' + nearbyAds.offer.checkout + '</p>';
+  newPosts.innerHTML = '<ul class="popup__features">';
+  for (var j = 0; j <= nearbyAds.offer.features.length; j++) {
+    newPosts.innerHTML = '<li class="feature feature--' + nearbyAds.offer.features[j] + '"></li>';
+  }
+  newPosts.innerHTML = '</ul>';
+  newPosts.innerHTML = '<p>' + nearbyAds.offer.description + '</p>';
+  newPosts.innerHTML = '<ul class="popup__pictures">';
+  for (j = 0; j <= nearbyAds.offer.photos.length; j++) {
+    newPosts.innerHTML = '<li><img src="' + nearbyAds.offer.photos[j] + '"></li>';
+  }
+  newPosts.innerHTML = '</ul>';
+
+  return newPosts;
+};
+
+fragment.appendChild(renderPosts());
+var mapFiltersContainer = document.querySelector('.map__filters-container');
+mapFiltersContainer.insertAdjacentHTML('beforebegin', similarTemplate.appendChild(fragment));
 
 
