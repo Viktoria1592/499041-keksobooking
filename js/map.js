@@ -80,7 +80,7 @@ var randomNumber = function (min, max) {
    return Math.round(Math.random() * (max - min) + min);
 };
 
-var Ads = function() {
+var generateAdData = function() {
   return {
     author: {
       avatar: 'img/avatars/user0' + randomNumber(8, 1) + '.png'
@@ -114,70 +114,59 @@ for (var i = 0; i < 8; i++) {
 }
 
 var mapPins = document.querySelector('.map__pins');
-
 var fragment = document.createDocumentFragment();
 
-for (i = 0; i < 6; i++) {
+for (i = 0; i < 8; i++) {
   var newElement = document.createElement('button');
-  newElement.style = 'left: ' + (nearByAds.location.x + 20) + 'px; top: ' + (nearByAds.location.y + 40) + 'px;';
+  newElement.style = 'left: ' + (nearByAds[i].location.x + 20) + 'px; top: ' + (nearByAds[i].location.y + 40) + 'px;';
   newElement.className = 'map__pin';
 
-  fragment.appendChild(newElement);
-}
-
-mapPins.appendChild(fragment);
-
-var mapPin = document.querySelector('.map__pin');
-
-for (i = 0; i < 6; i++) {
   var newElementImg = document.createElement('img');
-  newElementImg.src = nearByAds.author.avatar;
-  newElementImg.style.width = '40';
-  newElementImg.style.height = '40';
+  newElementImg.src = nearByAds[i].author.avatar;
+  newElementImg.width = '40';
+  newElementImg.height = '40';
   newElementImg.setAttribute('draggable', 'false');
 
-  fragment.appendChild(newElementImg);
+  newElement.appendChild(newElementImg);
+  fragment.appendChild(newElement);
 }
-
-mapPin.appendChild(fragment);
-
+mapPins.appendChild(fragment);
 
 var similarTemplate = document.querySelector('template').content.querySelector('article');
 
 var renderPosts = function () {
   var newPosts = similarTemplate.cloneNode(true);
-  var room = newPosts.querySelector('p:nth-child(3)');
-  var checkin = newPosts.querySelector('p:nth-child(4)');
-  var description = newPosts.querySelector('p:last-child');
+  var massP = newPosts.querySelectorAll('p');
   newPosts.className = 'map__card';
-  newPosts.querySelector('h3').innerText = nearByAds.offer.title;
-  newPosts.querySelector('small').innerText = nearByAds.offer.address;
-  newPosts.querySelector('.popup__price').innerText = nearByAds.offer.price + '&#x20bd;/ночь';
-  if (nearByAds.offer.type === 'flat') {
+  newPosts.querySelector('h3').innerText = nearByAds[i].offer.title;
+  newPosts.querySelector('small').innerText = nearByAds[i].offer.address;
+  console.log(nearByAds[i]);
+  newPosts.querySelector('.popup__price').innerText = nearByAds[i].offer.price + ' &#x20bd;/ночь';
+  if (nearByAds[i].offer.type === 'flat') {
     newPosts.querySelector('h4').innerText = 'Квартира';
-  } else if (nearByAds.offer.type === 'bungalo') {
+  } else if (nearByAds[i].offer.type === 'bungalo') {
     newPosts.querySelector('h4').innerText = 'Бунгало';
   } else {
     newPosts.querySelector('h4').innerText = 'Дом';
   }
-  room.innerText =  nearByAds.offer.rooms + ' комнаты для ' + nearByAds.offer.guests + ' гостей';
-  checkin.innerText = '<p>Заезд после ' + nearByAds.offer.checkin + ', выезд до ' + nearByAds.offer.checkout + '</p>';
+  massP[2].innerText =  nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
+  massP[3].innerText = 'Заезд после ' + nearByAds[i].offer.checkin + ', выезд до ' + nearByAds[i].offer.checkout;
   var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
-  for (var j = 0; j <= nearByAds.offer.features.length; j++) {
-    featureAll[j].className = nearByAds.offer.features[j];
+  for (var j = 0; j < nearByAds[i].offer.features.length; j++) {
+    featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
   }
-  description.innerText = nearByAds.offer.description;
-
-  var picturesAll = newPosts.querySelectorAll('li > img');
-  for (j = 0; j <= nearByAds.offer.photos.length; j++) {
-    picturesAll[j].src = nearByAds.offer.photos[j];
-  }
+  massP[4].innerText = nearByAds[i].offer.description;
+  newPosts.querySelector('li > img').src = nearByAds[i].offer.photos;
 
   return newPosts;
 };
+for (i = 0; i < 1; i++) {
+  fragment.appendChild(renderPosts());
+}
+var foo = document.querySelector('.map');
+foo.appendChild(fragment);
+console.log(foo);
 
-fragment.appendChild(renderPosts());
-var mapFiltersContainer = document.querySelector('.map__filters-container');
-mapFiltersContainer.insertAdjacentHTML('beforebegin', similarTemplate.appendChild(fragment));
-
+var mapFiltersContainer = document.querySelector('.map__filters-container')
+mapFiltersContainer.insertAdjacentHTML('beforeend', similarTemplate.appendChild(fragment));
 
