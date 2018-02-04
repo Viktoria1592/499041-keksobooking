@@ -126,40 +126,41 @@ for (i = 0; i < 6; i++) {
   newElementImg.style.width = '40';
   newElementImg.style.height = '40';
   newElementImg.setAttribute('draggable', 'false');
-  
+
   fragment.appendChild(newElement);
 }
 
 mapPins.appendChild(fragment);
 
-var similarTemplate = document.querySelector('.map__card popup').content;
+var similarTemplate = document.querySelector('template').content.querySelector('article');
 
 var renderPosts = function () {
   var newPosts = similarTemplate.cloneNode(true);
   newPosts.className = 'map__card';
-  newPosts.innerHTML = '<h3>' + nearbyAds.offer.title + '</h3>';
-  newPosts.innerHTML = '<p><small>' + nearbyAds.offer.address + '</small></p>';
-  newPosts.innerHTML = '<p class="popup__price">' + nearbyAds.offer.price + '&#x20bd;/ночь</p>';
+  newPosts.querySelector('h3').innerText = nearbyAds.offer.title;
+  newPosts.querySelector('small').innerText = nearbyAds.offer.address;
+  newPosts.querySelector('.popup__price').innerText = nearbyAds.offer.price + '&#x20bd;/ночь';
   if (nearbyAds.offer.type === 'flat') {
-    newPosts.innerHTML = '<h4>Квартира</h4>';
+    newPosts.querySelector('h4').innerText = 'Квартира';
   } else if (nearbyAds.offer.type === 'bungalo') {
-    newPosts.innerHTML = '<h4>Бунгало</h4>';
+    newPosts.querySelector('h4').innerText = 'Бунгало';
   } else {
-    newPosts.innerHTML = '<h4>Дом</h4>';
+    newPosts.querySelector('h4').innerText = 'Дом';
   }
-  newPosts.innerHTML = '<p>' + nearbyAds.offer.rooms + ' комнаты для ' + nearbyAds.offer.guests + ' гостей </p>';
-  newPosts.innerHTML = '<p>Заезд после ' + nearbyAds.offer.checkin + ', выезд до ' + nearbyAds.offer.checkout + '</p>';
-  newPosts.innerHTML = '<ul class="popup__features">';
+  newPosts.evaluate("//p[contains(., 'комнаты для')]", document.documentElement, null,
+    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).innerText =  nearbyAds.offer.rooms + ' комнаты для ' + nearbyAds.offer.guests + ' гостей';
+  newPosts.evaluate("//p[contains(., 'заезд после')]", document.documentElement, null,
+    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null).innerText = '<p>Заезд после ' + nearbyAds.offer.checkin + ', выезд до ' + nearbyAds.offer.checkout + '</p>';
+  var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
   for (var j = 0; j <= nearbyAds.offer.features.length; j++) {
-    newPosts.innerHTML = '<li class="feature feature--' + nearbyAds.offer.features[j] + '"></li>';
+    featureAll[j].className = nearbyAds.offer.features[j];
   }
-  newPosts.innerHTML = '</ul>';
-  newPosts.innerHTML = '<p>' + nearbyAds.offer.description + '</p>';
-  newPosts.innerHTML = '<ul class="popup__pictures">';
+  newPosts.querySelector('p:last-child').innerText = nearbyAds.offer.description;
+
+  var picturesAll = newPosts.querySelectorAll('li > img');
   for (j = 0; j <= nearbyAds.offer.photos.length; j++) {
-    newPosts.innerHTML = '<li><img src="' + nearbyAds.offer.photos[j] + '"></li>';
+    picturesAll[j].src = nearbyAds.offer.photos[j];
   }
-  newPosts.innerHTML = '</ul>';
 
   return newPosts;
 };
