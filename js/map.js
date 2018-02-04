@@ -121,8 +121,12 @@ for (i = 0; i < 6; i++) {
   var newElement = document.createElement('button');
   newElement.style = 'left: ' + (nearbyAds.location.x + 20) + 'px; top: ' + (nearbyAds.location.y + 40) + 'px;';
   newElement.className = 'map__pin';
-  newElement.innerHTML = '<img src="' + nearbyAds.author.avatar + '" width="40" height="40" draggable="false">';
-
+  var newElementImg = document.createElement('img');
+  newElementImg.src = nearbyAds.author.avatar;
+  newElementImg.style.width = '40';
+  newElementImg.style.height = '40';
+  newElementImg.setAttribute('draggable', 'false');
+  
   fragment.appendChild(newElement);
 }
 
