@@ -80,36 +80,44 @@ var randomNumber = function (min, max) {
    return Math.round(Math.random() * (max - min) + min);
 };
 
-var nearbyAds = {
-  author: {
-    avatar: 'img/avatars/user0' + randomNumber(8, 1) + '.png'
-  },
+var Ads = function() {
+  return {
+    author: {
+      avatar: 'img/avatars/user0' + randomNumber(8, 1) + '.png'
+    },
 
-  offer: {
-    title: randomElement(titlesCopy),
-    address: location.x + ', ' + location.y,
-    price: randomNumber(1000000, 1000),
-    type: randomElement(typesCopy),
-    rooms: randomNumber(5, 1),
-    guests: randomNumber(50, 1),
-    checkin: randomElement(checkinsCopy),
-    checkout: randomElement(checkinsCopy),
-    features: randomLenght(featuresCopy),
-    description: '',
-    photos: randomMass(photosCopy)
-  },
+    offer: {
+      title: randomElement(titlesCopy),
+      address: location.x + ', ' + location.y,
+      price: randomNumber(1000000, 1000),
+      type: randomElement(typesCopy),
+      rooms: randomNumber(5, 1),
+      guests: randomNumber(50, 1),
+      checkin: randomElement(checkinsCopy),
+      checkout: randomElement(checkinsCopy),
+      features: randomLenght(featuresCopy),
+      description: '',
+      photos: randomMass(photosCopy)
+    },
 
-  location: {
-    x: randomNumber(900, 300),
-    y: randomNumber(500, 150)
+    location: {
+      x: randomNumber(900, 300),
+      y: randomNumber(500, 150)
+    }
   }
 };
+
+var nearbyAds = [];
+
+for (var i = 0; i < 8; i++) {
+  nearbyAds[i] = Ads();
+}
 
 var mapPins = document.querySelector('.map__pins');
 
 var fragment = document.createDocumentFragment();
 
-for (var i = 0; i < 6; i++) {
+for (i = 0; i < 6; i++) {
   var newElement = document.createElement('button');
   newElement.style = 'left: ' + (nearbyAds.location.x + 20) + 'px; top: ' + (nearbyAds.location.y + 40) + 'px;';
   newElement.className = 'map__pin';
