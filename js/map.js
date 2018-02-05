@@ -53,7 +53,7 @@ var randomElement = function (mass) {
 var randomMass = function (mass) {
   var len = mass.length;
   var newMass = [];
-  for (var i = 0;  i < len; i++) {
+  for (var i = 0; i < len; i++) {
     var randomNumber = Math.round((mass.length - 1) * Math.random());
     var element = mass[randomNumber];
     mass.splice(randomNumber, 1);
@@ -81,7 +81,7 @@ var randomNumber = function (min, max) {
 };
 
 
-var generateAdData = function() {
+var generateAdData = function () {
   var locatX = randomNumber(900, 300);
   var locatY = randomNumber(500, 150);
   return {
@@ -107,7 +107,7 @@ var generateAdData = function() {
       x: locatX,
       y: locatY
     }
-  }
+  };
 };
 
 var nearByAds = [];
@@ -146,8 +146,8 @@ var similarTemplate = document.querySelector('template').content.querySelector('
 var renderPosts = function () {
   var newPosts = similarTemplate.cloneNode(true);
   var massP = newPosts.querySelectorAll('p');
-  var  elementInnerText= function(element, str) {
-    return newPosts.querySelector(element).innerText = str;
+  var elementInnerText = function (element, str) {
+    newPosts.querySelector(element).innerText = str;
   };
   newPosts.className = 'map__card';
   elementInnerText('h3', nearByAds[i].offer.title);
@@ -160,13 +160,13 @@ var renderPosts = function () {
   } else {
     elementInnerText('h4', 'Дом');
   }
-  massP[2].innerText =  nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
+  massP[2].innerText = nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
   massP[3].innerText = 'Заезд после ' + nearByAds[i].offer.checkin + ', выезд до ' + nearByAds[i].offer.checkout;
   newPosts.querySelector('.popup__features').style.paddingLeft = '0';
 
   var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
   for (var j = 0; j < featureAll.length; j++) {
-    if(nearByAds[i].offer.features[j] === undefined) {
+    if (nearByAds[i].offer.features[j] === undefined) {
       featureAll[j].style.display = 'none';
     } else {
       featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
