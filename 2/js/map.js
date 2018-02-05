@@ -53,7 +53,7 @@ var randomElement = function (mass) {
 var randomMass = function (mass) {
   var len = mass.length;
   var newMass = [];
-  for (var i = 0;  i < len; i++) {
+  for (var i = 0; i < len; i++) {
     var randomNumber = Math.round((mass.length - 1) * Math.random());
     var element = mass[randomNumber];
     mass.splice(randomNumber, 1);
@@ -81,7 +81,7 @@ var randomNumber = function (min, max) {
 };
 
 
-var generateAdData = function() {
+var generateAdData = function () {
   var locatX = randomNumber(900, 300);
   var locatY = randomNumber(500, 150);
   return {
@@ -107,7 +107,7 @@ var generateAdData = function() {
       x: locatX,
       y: locatY
     }
-  }
+  };
 };
 
 var nearByAds = [];
@@ -119,7 +119,7 @@ for (var i = 0; i < 8; i++) {
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-for (i = 0; i < 8; i++) {
+var createNewElement = function () {
   var newElement = document.createElement('button');
   newElement.style = 'left: ' + (nearByAds[i].locat.x + 20) + 'px; top: ' + (nearByAds[i].locat.y + 40) + 'px;';
   newElement.className = 'map__pin';
@@ -131,7 +131,11 @@ for (i = 0; i < 8; i++) {
   newImg.setAttribute('draggable', 'false');
 
   newElement.appendChild(newImg);
-  fragment.appendChild(newElement);
+  return newElement;
+};
+
+for (i = 0; i < 8; i++) {
+  fragment.appendChild(createNewElement());
 }
 mapPins.appendChild(fragment);
 
@@ -142,27 +146,27 @@ var similarTemplate = document.querySelector('template').content.querySelector('
 var renderPosts = function () {
   var newPosts = similarTemplate.cloneNode(true);
   var massP = newPosts.querySelectorAll('p');
+  var elementInnerText = function (element, str) {
+    newPosts.querySelector(element).innerText = str;
+  };
   newPosts.className = 'map__card';
-  newPosts.querySelector('h3').innerText = nearByAds[i].offer.title;
-  newPosts.querySelector('small').innerText = nearByAds[i].offer.address;
-  console.log(nearByAds[i]);
-  newPosts.querySelector('.popup__price').innerText = nearByAds[i].offer.price + ' ₽/ночь';
+  elementInnerText('h3', nearByAds[i].offer.title);
+  elementInnerText('small', nearByAds[i].offer.address);
+  elementInnerText('.popup__price', nearByAds[i].offer.price + ' ₽/ночь');
   if (nearByAds[i].offer.type === 'flat') {
-    newPosts.querySelector('h4').innerText = 'Квартира';
+    elementInnerText('h4', 'Квартира');
   } else if (nearByAds[i].offer.type === 'bungalo') {
-    newPosts.querySelector('h4').innerText = 'Бунгало';
+    elementInnerText('h4', 'Бунгало');
   } else {
-    newPosts.querySelector('h4').innerText = 'Дом';
+    elementInnerText('h4', 'Дом');
   }
-  massP[2].innerText =  nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
+  massP[2].innerText = nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
   massP[3].innerText = 'Заезд после ' + nearByAds[i].offer.checkin + ', выезд до ' + nearByAds[i].offer.checkout;
   newPosts.querySelector('.popup__features').style.paddingLeft = '0';
 
   var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
-  console.log(nearByAds[i].offer.features.length);
   for (var j = 0; j < featureAll.length; j++) {
-    console.log(nearByAds[i].offer.features[j]);
-    if(nearByAds[i].offer.features[j] === undefined) {
+    if (nearByAds[i].offer.features[j] === undefined) {
       featureAll[j].style.display = 'none';
     } else {
       featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
@@ -173,7 +177,8 @@ var renderPosts = function () {
 
   var ulPictures = newPosts.querySelector('.popup__pictures');
   ulPictures.style.paddingLeft = '0';
-  for (j = 0; j < 3; j++) {
+
+  var createImg = function () {
     var newElement = document.createElement('li');
 
     var newElementImg = document.createElement('img');
@@ -183,7 +188,11 @@ var renderPosts = function () {
     newElementImg.style.paddingRight = '3px';
 
     newElement.appendChild(newElementImg);
-    fragment.appendChild(newElement);
+    return newElement;
+  };
+
+  for (j = 0; j < 3; j++) {
+    fragment.appendChild(createImg());
   }
   ulPictures.appendChild(fragment);
 
