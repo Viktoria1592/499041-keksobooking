@@ -66,7 +66,7 @@ var randomMass = function (mass) {
 var randomLenght = function (mass) {
   var len = Math.round(mass.length * Math.random());
   var newMass = [];
-  for (var i = 0;  i < len; i++) {
+  for (var i = 0; i < len; i++) {
     var randomNumber = Math.round((mass.length - 1) * Math.random());
     var element = mass[randomNumber];
     mass.splice(randomNumber, 1);
@@ -166,7 +166,7 @@ var renderPosts = function () {
 
   var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
   for (var j = 0; j < featureAll.length; j++) {
-    if (nearByAds[i].offer.features[j] === undefined) {
+    if (nearByAds[i].offer.features[j] == null) {
       featureAll[j].style.display = 'none';
     } else {
       featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
