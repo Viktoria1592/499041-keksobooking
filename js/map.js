@@ -152,7 +152,8 @@ var renderPosts = function () {
   newPosts.className = 'map__card';
   elementInnerText('h3', nearByAds[i].offer.title);
   elementInnerText('small', nearByAds[i].offer.address);
-  elementInnerText('.popup__price', nearByAds[i].offer.price + ' ₽/ночь');
+  elementInnerText('.popup__price', nearByAds[i].offer.price.toLocaleString() + ' ₽/ночь');
+
   if (nearByAds[i].offer.type === 'flat') {
     elementInnerText('h4', 'Квартира');
   } else if (nearByAds[i].offer.type === 'bungalo') {
@@ -160,19 +161,27 @@ var renderPosts = function () {
   } else {
     elementInnerText('h4', 'Дом');
   }
-  massP[2].innerText = nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
+
+  if (nearByAds[i].offer.rooms === 1) {
+    massP[2].innerText = nearByAds[i].offer.rooms + ' комната для ' + nearByAds[i].offer.guests + ' гостей';
+  } else if (nearByAds[i].offer.rooms === 5) {
+    massP[2].innerText = nearByAds[i].offer.rooms + ' комнат для ' + nearByAds[i].offer.guests + ' гостей';
+  } else {
+    massP[2].innerText = nearByAds[i].offer.rooms + ' комнаты для ' + nearByAds[i].offer.guests + ' гостей';
+  }
+
   massP[3].innerText = 'Заезд после ' + nearByAds[i].offer.checkin + ', выезд до ' + nearByAds[i].offer.checkout;
   newPosts.querySelector('.popup__features').style.paddingLeft = '0';
 
   var featureAll = newPosts.querySelectorAll('ul.popup__features > li');
-  for (var j = 0; j < featureAll.length; j++) {
-    if (nearByAds[i].offer.features[j] == null) {
-      featureAll[j].style.display = 'none';
-    } else {
-      featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
-    }
-
+  for (j = 0; j < featureAll.length; j++) {
+    featureAll[j].style.display = 'none';
   }
+  for (var j = 0; j < nearByAds[i].offer.features.length; j++) {
+    featureAll[j].style.display = '';
+    featureAll[j].className = 'feature feature--' + nearByAds[i].offer.features[j];
+  }
+
   massP[4].innerText = nearByAds[i].offer.description;
 
   var ulPictures = newPosts.querySelector('.popup__pictures');
@@ -205,4 +214,3 @@ for (i = 0; i < 1; i++) {
 }
 var foo = document.querySelector('.map');
 foo.appendChild(fragment);
-
