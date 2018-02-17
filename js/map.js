@@ -139,8 +139,6 @@ for (var i = 0; i < 8; i++) {
 }
 mapPins.appendChild(fragment);
 
-
-
 var similarTemplate = document.querySelector('template').content.querySelector('article');
 
 var renderPosts = function () {
@@ -248,6 +246,7 @@ docElem.addEventListener('mouseup', function() {
   for (i = 0; i < 1; i++) {
     fragment.appendChild(renderPosts());
   }
+  foo.appendChild(fragment);
   var mapPin = document.querySelectorAll('.map__pin');
   for (i = 0; i < mapPin.length; i++) {
     mapPin[i].style.display = '';
@@ -255,15 +254,16 @@ docElem.addEventListener('mouseup', function() {
   setFocus('#address');
 });
 
+var mapPin = document.querySelectorAll('.map__pin');
+
 mapPins.addEventListener('click', function(evt) {
   var activeElement = evt.target;
+  console.log(activeElement);
   var mapPin = document.querySelectorAll('.map__pin');
   for (i = 0; i < 8; i++) {
     if(activeElement.style === mapPin[i+1].style) {
-      fragment.appendChild(renderPosts());
-      var sp2 = foo.querySelector('.map__card');
-      var sp1 = foo.appendChild(fragment);
-      foo.replaceChild(sp1, sp2);
+      var sp2 = document.querySelector('.map__card');
+      foo.replaceChild(foo.appendChild(fragment), sp2);
     }
   }
 });
