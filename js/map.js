@@ -65,9 +65,8 @@ var randomAvatar = function (mass) {
 
 var randomElement = function (mass) {
   var randomNumber = Math.round((mass.length - 1) * Math.random());
-  var element = mass[randomNumber];
-
-  return element;
+  
+  return mass[randomNumber];
 };
 
 var randomMass = function () {
@@ -236,13 +235,13 @@ for (i = 0; i < fieldsets.length; i++) {
 
 var noticeForm = document.querySelector('.notice__form');
 
-function setFocus (name){
+function setFocus (name) {
   document.querySelector(name).focus();
-}
+};
 
 var docElem = document.querySelector('.map__pin--main');
 
-var locationOfAnElement = function(docElement) {
+var locationOfAnElement = function (docElement) {
   var mapLocat = docElement.getBoundingClientRect();
   var body = document.body;
   var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
@@ -256,10 +255,10 @@ var foo = document.querySelector('.map');
 
 document.querySelector('#address').value = locationOfAnElement(docElem);
 
-docElem.addEventListener('mouseup', function() {
+docElem.addEventListener('mouseup', function () {
   foo.classList.remove('map--faded');
   noticeForm.classList.remove('notice__form--disabled');
-  for ( i = 0; i < fieldsets.length; i++) {
+  for (i = 0; i < fieldsets.length; i++) {
     fieldsets[i].removeAttribute('disabled');
   }
   foo.appendChild(fragments);
@@ -273,7 +272,7 @@ docElem.addEventListener('mouseup', function() {
   setFocus('#address');
 });
 
-mapPins.addEventListener('click', function(evt) {
+mapPins.addEventListener('click', function (evt) {
   var activeElement = evt.target;
   var mapPin = document.querySelectorAll('.map__pin');
   var imgPin = mapPins.querySelectorAll('img');
@@ -284,4 +283,5 @@ mapPins.addEventListener('click', function(evt) {
       foo.replaceChild(sp1, sp2);
     }
   }
-});
+}
+);
