@@ -65,7 +65,6 @@ var randomAvatar = function (mass) {
 
 var randomElement = function (mass) {
   var randomNumber = Math.round((mass.length - 1) * Math.random());
-  
   return mass[randomNumber];
 };
 
