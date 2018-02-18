@@ -70,13 +70,13 @@ var randomElement = function (mass) {
 };
 
 var randomMass = function () {
-  var photosCopy = PHOTOS.slice();
-  var len = photosCopy.length;
+  var photoCopy = PHOTOS.slice();
+  var len = photoCopy.length;
   var newMass = [];
   for (var i = 0; i < len; i++) {
-    var randomsNumber = Math.round((photosCopy.length - 1) * Math.random())
-    var element = photosCopy[randomsNumber];
-    photosCopy.splice(randomsNumber, 1);
+    var randomsNumber = Math.round((photoCopy.length - 1) * Math.random());
+    var element = photoCopy[randomsNumber];
+    photoCopy.splice(randomsNumber, 1);
     newMass[i] = element;
   }
 
@@ -235,9 +235,9 @@ for (i = 0; i < fieldsets.length; i++) {
 
 var noticeForm = document.querySelector('.notice__form');
 
-function setFocus (name) {
+function setFocus(name) {
   document.querySelector(name).focus();
-};
+}
 
 var docElem = document.querySelector('.map__pin--main');
 
@@ -249,7 +249,7 @@ var locationOfAnElement = function (docElement) {
   var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2;
   var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
   return (Math.round(mapLocateX) + ', ' + Math.round(mapLocateY));
-}
+};
 
 var foo = document.querySelector('.map');
 
@@ -277,7 +277,7 @@ mapPins.addEventListener('click', function (evt) {
   var mapPin = document.querySelectorAll('.map__pin');
   var imgPin = mapPins.querySelectorAll('img');
   for (i = 0; i < 8; i++) {
-    if (activeElement.style === mapPin[i+1].style || activeElement.src === imgPin[i+1].src) {
+    if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
       var sp2 = document.querySelector('.map__card');
       var sp1 = foo.appendChild(renderPosts());
       foo.replaceChild(sp1, sp2);
