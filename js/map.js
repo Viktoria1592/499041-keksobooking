@@ -285,7 +285,3 @@ mapPins.addEventListener('click', function(evt) {
     }
   }
 });
-
-
-
-
