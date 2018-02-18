@@ -34,6 +34,17 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+var AVATARS = [
+  'img/avatars/user01.png',
+  'img/avatars/user02.png',
+  'img/avatars/user03.png',
+  'img/avatars/user04.png',
+  'img/avatars/user05.png',
+  'img/avatars/user06.png',
+  'img/avatars/user07.png',
+  'img/avatars/user08.png'
+];
+
 var PIN_WIDTH = 40;
 var PIN_HEIGHT = 40;
 
@@ -42,6 +53,15 @@ var typesCopy = TYPES.slice();
 var checkinsCopy = CHECKINS.slice();
 var featuresCopy = FEATURES.slice();
 var photosCopy = PHOTOS.slice();
+var avatarsCopy = AVATARS.slice();
+
+var randomAvatar = function (mass) {
+  var randomNumber = Math.round((mass.length - 1) * Math.random());
+  var element = mass[randomNumber];
+  mass.splice(randomNumber, 1);
+
+  return element;
+};
 
 var randomElement = function (mass) {
   var randomNumber = Math.round((mass.length - 1) * Math.random());
@@ -87,7 +107,7 @@ var generateAdData = function () {
   var locatY = randomNumber(500, 150);
   return {
     author: {
-      avatar: 'img/avatars/user0' + randomNumber(8, 1) + '.png'
+      avatar: randomAvatar(avatarsCopy)
     },
 
     offer: {
@@ -137,7 +157,7 @@ for (var i = 0; i < 8; i++) {
   nearByAds.push(generateAdData());
   fragments.appendChild(createNewElement());
 }
-mapPins.appendChild(fragment);
+mapPins.appendChild(fragments);
 
 var similarTemplate = document.querySelector('template').content.querySelector('article');
 
@@ -239,13 +259,12 @@ document.querySelector('#address').value = locationOfAnElement(docElem);
 docElem.addEventListener('mouseup', function() {
   foo.classList.remove('map--faded');
   noticeForm.classList.remove('notice__form--disabled');
-  for (i = 0; i < fieldsets.length; i++) {
+  for ( i = 0; i < fieldsets.length; i++) {
     fieldsets[i].removeAttribute('disabled');
   }
   foo.appendChild(fragments);
-  for (i = 0; i < 1; i++) {
-    fragment.appendChild(renderPosts());
-  }
+  i = 0;
+  fragment.appendChild(renderPosts());
   foo.appendChild(fragment);
   var mapPin = document.querySelectorAll('.map__pin');
   for (i = 0; i < mapPin.length; i++) {
@@ -254,16 +273,15 @@ docElem.addEventListener('mouseup', function() {
   setFocus('#address');
 });
 
-var mapPin = document.querySelectorAll('.map__pin');
-
 mapPins.addEventListener('click', function(evt) {
   var activeElement = evt.target;
-  console.log(activeElement);
   var mapPin = document.querySelectorAll('.map__pin');
+  var imgPin = mapPins.querySelectorAll('img');
   for (i = 0; i < 8; i++) {
-    if(activeElement.style === mapPin[i+1].style) {
+    if (activeElement.style === mapPin[i+1].style || activeElement.src === imgPin[i+1].src) {
       var sp2 = document.querySelector('.map__card');
-      foo.replaceChild(foo.appendChild(fragment), sp2);
+      var sp1 = foo.appendChild(renderPosts());
+      foo.replaceChild(sp1, sp2);
     }
   }
 });
