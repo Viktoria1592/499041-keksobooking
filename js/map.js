@@ -281,17 +281,17 @@ mapPins.addEventListener('click', function (evt) {
   var mapPin = document.querySelectorAll('.map__pin');
   var imgPin = mapPins.querySelectorAll('img');
   for (i = 0; i < mapPin.length - 1; i++) {
-  	var sp2 = document.querySelector('.map__card');
+    var sp2 = document.querySelector('.map__card');
     if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
       if (sp2 !== null) {
-      	var sp1 = foo.appendChild(renderPosts());
+        var sp1 = foo.appendChild(renderPosts());
         foo.replaceChild(sp1, sp2);
       } else {
-      	foo.appendChild(renderPosts());
+        foo.appendChild(renderPosts());
       }
     } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
       if (sp2 !== null) {
-      	foo.removeChild(foo.querySelector('.map__card'));
+        foo.removeChild(foo.querySelector('.map__card'));
       }
     }
   }
