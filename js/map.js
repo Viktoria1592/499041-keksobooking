@@ -356,6 +356,3 @@ roomNumber.addEventListener('mouseup', function () {
   }
 }
 );
-
-
-
