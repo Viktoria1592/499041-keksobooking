@@ -234,10 +234,6 @@ for (i = 0; i < fieldsets.length; i++) {
 
 var noticeForm = document.querySelector('.notice__form');
 
-function setFocus(name) {
-  document.querySelector(name).focus();
-}
-
 var docElem = document.querySelector('.map__pin--main');
 
 var locationOfAnElement = function (docElement) {
@@ -318,14 +314,14 @@ var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
 
 timeIn.addEventListener('mouseup', function () {
-    if (timeIn.value === '12:00') {
-      timeOut.value = '12:00';
-    } else if (timeIn.value === '13:00') {
-      timeOut.value = '13:00';
-    } else {
-      timeOut.value = '14:00';
-    }
+  if (timeIn.value === '12:00') {
+    timeOut.value = '12:00';
+  } else if (timeIn.value === '13:00') {
+    timeOut.value = '13:00';
+  } else {
+    timeOut.value = '14:00';
   }
+}
 );
 
 var roomNumber = document.querySelector('#room_number');
@@ -333,33 +329,30 @@ var option = document.querySelector('#capacity').querySelectorAll('option');
 var capacity = document.querySelector('#capacity');
 
 roomNumber.addEventListener('mouseup', function () {
-    if (roomNumber.value === '1') {
-      capacity.value = '1';
-      option[0].disabled = 'disabled';
-      option[1].disabled = 'disabled';
-      option[2].disabled = '';
-      option[3].disabled = 'disabled';
-    } else if (roomNumber.value === '2') {
-      capacity.value = '2';
-      option[0].disabled = 'disabled';
-      option[1].disabled = '';
-      option[2].disabled = '';
-      option[3].disabled = 'disabled';
-    } else if (roomNumber.value === '3') {
-      capacity.value = '3';
-      option[0].disabled = '';
-      option[1].disabled = '';
-      option[2].disabled = '';
-      option[3].disabled = 'disabled';
-    } else {
-      capacity.value = '0';
-      option[0].disabled = 'disabled';
-      option[1].disabled = 'disabled';
-      option[2].disabled = 'disabled';
-      option[3].disabled = '';
-    }
+  if (roomNumber.value === '1') {
+    capacity.value = '1';
+    option[0].disabled = 'disabled';
+    option[1].disabled = 'disabled';
+    option[2].disabled = '';
+    option[3].disabled = 'disabled';
+  } else if (roomNumber.value === '2') {
+    capacity.value = '2';
+    option[0].disabled = 'disabled';
+    option[1].disabled = '';
+    option[2].disabled = '';
+    option[3].disabled = 'disabled';
+  } else if (roomNumber.value === '3') {
+    capacity.value = '3';
+    option[0].disabled = '';
+    option[1].disabled = '';
+    option[2].disabled = '';
+    option[3].disabled = 'disabled';
+  } else {
+    capacity.value = '0';
+    option[0].disabled = 'disabled';
+    option[1].disabled = 'disabled';
+    option[2].disabled = 'disabled';
+    option[3].disabled = '';
   }
+}
 );
-
-
-
