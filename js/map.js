@@ -1,7 +1,5 @@
 'use strict';
 
-document.querySelector('.map').classList.remove('.map--faded');
-
 var TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -36,13 +34,28 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+var AVATARS = [
+  'img/avatars/user01.png',
+  'img/avatars/user02.png',
+  'img/avatars/user03.png',
+  'img/avatars/user04.png',
+  'img/avatars/user05.png',
+  'img/avatars/user06.png',
+  'img/avatars/user07.png',
+  'img/avatars/user08.png'
+];
+
+var PIN_WIDTH = 40;
+var PIN_HEIGHT = 40;
+
 var titlesCopy = TITLES.slice();
 var typesCopy = TYPES.slice();
 var checkinsCopy = CHECKINS.slice();
 var featuresCopy = FEATURES.slice();
 var photosCopy = PHOTOS.slice();
+var avatarsCopy = AVATARS.slice();
 
-var randomElement = function (mass) {
+var randomAvatar = function (mass) {
   var randomNumber = Math.round((mass.length - 1) * Math.random());
   var element = mass[randomNumber];
   mass.splice(randomNumber, 1);
@@ -50,13 +63,19 @@ var randomElement = function (mass) {
   return element;
 };
 
-var randomMass = function (mass) {
-  var len = mass.length;
+var randomElement = function (mass) {
+  var randomNumber = Math.round((mass.length - 1) * Math.random());
+  return mass[randomNumber];
+};
+
+var randomMass = function () {
+  var photoCopy = PHOTOS.slice();
+  var len = photoCopy.length;
   var newMass = [];
   for (var i = 0; i < len; i++) {
-    var randomNumber = Math.round((mass.length - 1) * Math.random());
-    var element = mass[randomNumber];
-    mass.splice(randomNumber, 1);
+    var randomsNumber = Math.round((photoCopy.length - 1) * Math.random());
+    var element = photoCopy[randomsNumber];
+    photoCopy.splice(randomsNumber, 1);
     newMass[i] = element;
   }
 
@@ -86,12 +105,12 @@ var generateAdData = function () {
   var locatY = randomNumber(500, 150);
   return {
     author: {
-      avatar: 'img/avatars/user0' + randomNumber(8, 1) + '.png'
+      avatar: randomAvatar(avatarsCopy)
     },
 
     offer: {
       title: randomElement(titlesCopy),
-      address: locatX + ', ' + locatY,
+      address: (locatX + PIN_WIDTH / 2) + ', ' + (locatY + PIN_HEIGHT),
       price: randomNumber(1000000, 1000),
       type: randomElement(typesCopy),
       rooms: randomNumber(5, 1),
@@ -111,18 +130,14 @@ var generateAdData = function () {
 };
 
 var nearByAds = [];
-
-for (var i = 0; i < 8; i++) {
-  nearByAds.push(generateAdData());
-}
-
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
 var createNewElement = function () {
   var newElement = document.createElement('button');
-  newElement.style = 'left: ' + (nearByAds[i].locat.x + 20) + 'px; top: ' + (nearByAds[i].locat.y + 40) + 'px;';
+  newElement.style = 'left: ' + (nearByAds[i].locat.x + PIN_WIDTH / 2) + 'px; top: ' + (nearByAds[i].locat.y + PIN_HEIGHT) + 'px;';
   newElement.className = 'map__pin';
+  newElement.style.display = 'none';
 
   var newImg = document.createElement('img');
   newImg.src = nearByAds[i].author.avatar;
@@ -134,12 +149,13 @@ var createNewElement = function () {
   return newElement;
 };
 
-for (i = 0; i < 8; i++) {
-  fragment.appendChild(createNewElement());
-}
-mapPins.appendChild(fragment);
+var fragments = document.createDocumentFragment();
 
-document.querySelector('.map').classList.remove('map--faded');
+for (var i = 0; i < 8; i++) {
+  nearByAds.push(generateAdData());
+  fragments.appendChild(createNewElement());
+}
+mapPins.appendChild(fragments);
 
 var similarTemplate = document.querySelector('template').content.querySelector('article');
 
@@ -209,8 +225,75 @@ var renderPosts = function () {
 
   return newPosts;
 };
-for (i = 0; i < 1; i++) {
-  fragment.appendChild(renderPosts());
+
+var fieldsets = document.querySelectorAll('fieldset');
+
+for (i = 0; i < fieldsets.length; i++) {
+  fieldsets[i].setAttribute('disabled', true);
 }
+
+var noticeForm = document.querySelector('.notice__form');
+
+function setFocus(name) {
+  document.querySelector(name).focus();
+}
+
+var docElem = document.querySelector('.map__pin--main');
+
+var locationOfAnElement = function (docElement) {
+  var mapLocat = docElement.getBoundingClientRect();
+  var body = document.body;
+  var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
+  var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
+  var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2;
+  var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
+  return (Math.round(mapLocateX) + ', ' + Math.round(mapLocateY));
+};
+
 var foo = document.querySelector('.map');
-foo.appendChild(fragment);
+
+document.querySelector('#address').value = locationOfAnElement(docElem);
+
+var enableFieldsets = function (mass) {
+  for (i = 0; i < mass.length; i++) {
+    mass[i].removeAttribute('disabled');
+  }
+};
+
+docElem.addEventListener('mouseup', function () {
+  foo.classList.remove('map--faded');
+  noticeForm.classList.remove('notice__form--disabled');
+  enableFieldsets(fieldsets);
+  foo.appendChild(fragments);
+  i = 0;
+  fragment.appendChild(renderPosts());
+  foo.appendChild(fragment);
+  var mapPin = document.querySelectorAll('.map__pin');
+  for (i = 0; i < mapPin.length; i++) {
+    mapPin[i].style.display = '';
+  }
+  setFocus('#address');
+}
+);
+
+mapPins.addEventListener('click', function (evt) {
+  var activeElement = evt.target;
+  var mapPin = document.querySelectorAll('.map__pin');
+  var imgPin = mapPins.querySelectorAll('img');
+  for (i = 0; i < mapPin.length - 1; i++) {
+    var sp2 = document.querySelector('.map__card');
+    if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
+      if (sp2 !== null) {
+        var sp1 = foo.appendChild(renderPosts());
+        foo.replaceChild(sp1, sp2);
+      } else {
+        foo.appendChild(renderPosts());
+      }
+    } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
+      if (sp2 !== null) {
+        foo.removeChild(foo.querySelector('.map__card'));
+      }
+    }
+  }
+}
+);
