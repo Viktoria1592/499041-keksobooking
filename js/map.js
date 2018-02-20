@@ -297,7 +297,7 @@ mapPins.addEventListener('click', function (evt) {
 var typeHoume = document.querySelector('#type');
 var priceHoume = document.querySelector('#price');
 
-typeHoume.addEventListener('mouseup', function () {
+typeHoume.addEventListener('click', function () {
   if (typeHoume.value === 'bungalo') {
     priceHoume.min = '0';
   } else if (typeHoume.value === 'flat') {
@@ -313,7 +313,7 @@ typeHoume.addEventListener('mouseup', function () {
 var timeIn = document.querySelector('#timein');
 var timeOut = document.querySelector('#timeout');
 
-timeIn.addEventListener('mouseup', function () {
+timeIn.addEventListener('click', function () {
   if (timeIn.value === '12:00') {
     timeOut.value = '12:00';
   } else if (timeIn.value === '13:00') {
@@ -328,7 +328,7 @@ var roomNumber = document.querySelector('#room_number');
 var option = document.querySelector('#capacity').querySelectorAll('option');
 var capacity = document.querySelector('#capacity');
 
-roomNumber.addEventListener('mouseup', function () {
+roomNumber.addEventListener('click', function () {
   if (roomNumber.value === '1') {
     capacity.value = '1';
     option[0].disabled = 'disabled';
