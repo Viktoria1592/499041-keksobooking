@@ -38,40 +38,40 @@
   };
 
   docElem.addEventListener('mouseup', function () {
-      foo.classList.remove('map--faded');
-      noticeForm.classList.remove('notice__form--disabled');
-      enableFieldsets(fieldsets);
-      foo.appendChild(fragments);
-      i = 0;
-      fragment.appendChild(window.card(nearByAds[i]));
-      foo.appendChild(fragment);
-      var mapPin = document.querySelectorAll('.map__pin');
-      for (i = 0; i < mapPin.length; i++) {
-        mapPin[i].style.display = '';
-      }
-      document.querySelector('#address').disabled = 'disabled';
+    foo.classList.remove('map--faded');
+    noticeForm.classList.remove('notice__form--disabled');
+    enableFieldsets(fieldsets);
+    foo.appendChild(fragments);
+    i = 0;
+    fragment.appendChild(window.card(nearByAds[i]));
+    foo.appendChild(fragment);
+    var mapPin = document.querySelectorAll('.map__pin');
+    for (i = 0; i < mapPin.length; i++) {
+      mapPin[i].style.display = '';
     }
+    document.querySelector('#address').disabled = 'disabled';
+  }
   );
 
   mapPins.addEventListener('click', function (evt) {
-      var activeElement = evt.target;
-      var mapPin = document.querySelectorAll('.map__pin');
-      var imgPin = mapPins.querySelectorAll('img');
-      for (i = 0; i < mapPin.length - 1; i++) {
-        var sp2 = document.querySelector('.map__card');
-        if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
-          if (sp2 !== null) {
-            var sp1 = foo.appendChild(window.card(nearByAds[i]));
-            foo.replaceChild(sp1, sp2);
-          } else {
-            foo.appendChild(window.card(nearByAds[i]));
-          }
-        } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
-          if (sp2 !== null) {
-            foo.removeChild(foo.querySelector('.map__card'));
-          }
+    var activeElement = evt.target;
+    var mapPin = document.querySelectorAll('.map__pin');
+    var imgPin = mapPins.querySelectorAll('img');
+    for (i = 0; i < mapPin.length - 1; i++) {
+      var sp2 = document.querySelector('.map__card');
+      if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
+        if (sp2 !== null) {
+          var sp1 = foo.appendChild(window.card(nearByAds[i]));
+          foo.replaceChild(sp1, sp2);
+        } else {
+          foo.appendChild(window.card(nearByAds[i]));
+        }
+      } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
+        if (sp2 !== null) {
+          foo.removeChild(foo.querySelector('.map__card'));
         }
       }
     }
+  }
   );
 })();

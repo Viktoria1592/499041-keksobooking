@@ -6,8 +6,8 @@
   window.card = function (element) {
     var newPosts = similarTemplate.cloneNode(true);
     var massP = newPosts.querySelectorAll('p');
-    var elementInnerText = function (element, str) {
-      newPosts.querySelector(element).innerText = str;
+    var elementInnerText = function (elem, str) {
+      newPosts.querySelector(elem).innerText = str;
     };
     newPosts.className = 'map__card';
     elementInnerText('h3', element.offer.title);
@@ -68,5 +68,5 @@
     newPosts.querySelector('.popup__avatar').src = element.author.avatar;
 
     return newPosts;
-  }
+  };
 })();

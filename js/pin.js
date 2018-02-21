@@ -17,5 +17,5 @@
 
     newElement.appendChild(newImg);
     return newElement;
-  }
+  };
 })();
