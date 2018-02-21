@@ -22,13 +22,13 @@
       elementInnerText('h4', 'Дом');
     }
 
+    var room = ' комнаты';
     if (element.offer.rooms === 1) {
-      massP[2].innerText = element.offer.rooms + ' комната для ' + element.offer.guests + ' гостей';
+      room = ' комната';
     } else if (element.offer.rooms === 5) {
-      massP[2].innerText = element.offer.rooms + ' комнат для ' + element.offer.guests + ' гостей';
-    } else {
-      massP[2].innerText = element.offer.rooms + ' комнаты для ' + element.offer.guests + ' гостей';
+      room = ' комнат';
     }
+    massP[2].innerText = element.offer.rooms + room + ' для ' + element.offer.guests + ' гостей';
 
     massP[3].innerText = 'Заезд после ' + element.offer.checkin + ', выезд до ' + element.offer.checkout;
     newPosts.querySelector('.popup__features').style.paddingLeft = '0';
