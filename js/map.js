@@ -1,5 +1,9 @@
 'use strict';
 (function () {
+  var WIDTH_MAP = 1200;
+  var HEIDHT_MAP = 750;
+  var docElem = document.querySelector('.map__pin--main');
+  var mapLocat = docElem.getBoundingClientRect();
   var nearByAds = [];
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
@@ -14,8 +18,6 @@
   var fieldsets = document.querySelectorAll('fieldset');
 
   var noticeForm = document.querySelector('.notice__form');
-
-  var docElem = document.querySelector('.map__pin--main');
 
   var locationOfAnElement = function (docElement) {
     var mapLocat = docElement.getBoundingClientRect();
@@ -49,9 +51,61 @@
     for (i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
-    document.querySelector('#address').disabled = 'disabled';
+    document.querySelector('#address').disabled = 'true';
   }
   );
+
+  docElem.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      if (docElem.offsetTop - shift.y > HEIDHT_MAP - mapLocat.height) {
+        docElem.style.top = HEIDHT_MAP - mapLocat.height + 'px';
+      } else if (docElem.offsetTop - shift.y < 160 - mapLocat.height / 2) {
+        docElem.style.top = 160 - mapLocat.height / 2 + 'px';
+      } else {
+        docElem.style.top = (docElem.offsetTop - shift.y) + 'px';
+      }
+
+      console.log(docElem.offsetLeft);
+      if (docElem.offsetLeft - shift.x > WIDTH_MAP) {
+        docElem.style.left = (WIDTH_MAP) + 'px';
+      } else if (docElem.offsetLeft - shift.x < 0) {
+        docElem.style.left = 0 + 'px';
+      } else {
+        docElem.style.left = (docElem.offsetLeft - shift.x) + 'px';
+      }
+
+      document.querySelector('#address').value = locationOfAnElement(docElem);
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 
   mapPins.addEventListener('click', function (evt) {
     var activeElement = evt.target;
