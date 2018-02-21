@@ -20,7 +20,6 @@
   var noticeForm = document.querySelector('.notice__form');
 
   var locationOfAnElement = function (docElement) {
-    var mapLocat = docElement.getBoundingClientRect();
     var body = document.body;
     var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
@@ -84,7 +83,6 @@
         docElem.style.top = (docElem.offsetTop - shift.y) + 'px';
       }
 
-      console.log(docElem.offsetLeft);
       if (docElem.offsetLeft - shift.x > WIDTH_MAP) {
         docElem.style.left = (WIDTH_MAP) + 'px';
       } else if (docElem.offsetLeft - shift.x < 0) {
