@@ -1,26 +1,39 @@
 'use strict';
 (function () {
+
+  var onLoad = function (mass) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < 8; i++) {
+      nearByAds[i] = mass[i];
+      fragments.appendChild(window.pin(nearByAds[i]));
+    }
+    mapPins.appendChild(fragments);
+  };
+
+  var onError = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; position: absolute;';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var nearByAds = [];
+  window.load(onLoad, onError);
+
+
   var WIDTH_MAP = 1200;
   var HEIDHT_MAP = 750;
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
-  var nearByAds = [];
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
   var fragments = document.createDocumentFragment();
-
-  for (var i = 0; i < 8; i++) {
-    nearByAds.push(window.data());
-    fragments.appendChild(window.pin(nearByAds[i]));
-  }
-  mapPins.appendChild(fragments);
-
   var fieldsets = document.querySelectorAll('fieldset');
-
   var noticeForm = document.querySelector('.notice__form');
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
+    var mapLocat = docElem.getBoundingClientRect();
     var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
     var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2;
@@ -33,7 +46,7 @@
   document.querySelector('#address').value = locationOfAnElement(docElem);
 
   var enableFieldsets = function (mass) {
-    for (i = 0; i < mass.length; i++) {
+    for (var i = 0; i < mass.length; i++) {
       mass[i].removeAttribute('disabled');
     }
   };
@@ -43,7 +56,7 @@
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
     foo.appendChild(fragments);
-    i = 0;
+    var i = 0;
     fragment.appendChild(window.card(nearByAds[i]));
     foo.appendChild(fragment);
     var mapPin = document.querySelectorAll('.map__pin');
@@ -109,7 +122,7 @@
     var activeElement = evt.target;
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = mapPins.querySelectorAll('img');
-    for (i = 0; i < mapPin.length - 1; i++) {
+    for (var i = 0; i < mapPin.length - 1; i++) {
       var sp2 = document.querySelector('.map__card');
       if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
         if (sp2 !== null) {
@@ -126,4 +139,20 @@
     }
   }
   );
+
+  //var uploader = ;
+
+  noticeForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(noticeForm), function (response) {
+      noticeForm.querySelector('#title').value = '';
+      noticeForm.querySelector('#type').value = 'flat';
+      noticeForm.querySelector('#price').value = '';
+      noticeForm.querySelector('#timein').value = '12:00';
+      noticeForm.querySelector('#timeout').value = '12:00';
+      noticeForm.querySelector('#room_number').value = '1';
+      noticeForm.querySelector('#capacity').value = '3';
+      noticeForm.querySelector('#description').value = '';
+    }, onError);
+    evt.preventDefault();
+  });
 })();
