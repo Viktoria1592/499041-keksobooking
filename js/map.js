@@ -12,7 +12,9 @@
 
   var onError = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; position: absolute;';
+    node.style = 'z-index: 100; margin: 17em 28em; text-align: center; ' +
+      'background-color: red; position: absolute; padding-top: 70px;' +
+      'width: 300px; height: 100px; border: 2px solid white';
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
@@ -63,7 +65,7 @@
     for (i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
-    document.querySelector('#address').disabled = 'true';
+    document.querySelector('#address').disabled = true;
   }
   );
 
@@ -104,7 +106,7 @@
         docElem.style.left = (docElem.offsetLeft - shift.x) + 'px';
       }
 
-      document.querySelector('#address').value = locationOfAnElement(docElem);
+      noticeForm.querySelector('#address').value = locationOfAnElement(docElem);
     };
 
     var onMouseUp = function (upEvt) {
@@ -152,6 +154,16 @@
       noticeForm.querySelector('#room_number').value = '1';
       noticeForm.querySelector('#capacity').value = '3';
       noticeForm.querySelector('#description').value = '';
+      foo.classList.add('map--faded');
+      noticeForm.classList.add('notice__form--disabled');
+      var mapPin = document.querySelectorAll('.map__pin');
+      for (var i = 1; i < mapPin.length; i++) {
+        mapPin[i].style.display = 'none';
+      }
+      foo.removeChild(foo.querySelector('.map__card'));
+      for (i = 0; i < fieldsets.length; i++) {
+        fieldsets[i].disabled = true;
+      }
     }, onError);
     evt.preventDefault();
   });
