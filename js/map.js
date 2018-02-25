@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var ESC_KEYCODE = 27;
 
   var onLoad = function (mass) {
     for (var i = 0; i < 8; i++) {
@@ -149,6 +150,22 @@
         }
       }
     }
+    var mapCard = map.querySelector('.map__card');
+    var closePopup = function () {
+      map.removeChild(mapCard);
+      document.removeEventListener('keydown', onPopupEscPress);
+    };
+
+    var mapCardClose = mapCard.querySelector('.popup__close');
+    mapCardClose.addEventListener('click', function () {
+      closePopup();
+    });
+
+    mapCardClose.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closePopup();
+      }
+    });
   }
   );
 
