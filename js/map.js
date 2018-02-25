@@ -39,7 +39,7 @@
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
     var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2;
     var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
-    return (Math.round(mapLocateX) + ', ' + Math.round(mapLocateY));
+    return Math.round(mapLocateX) + ', ' + Math.round(mapLocateY);
   };
 
   var locationCoordinatesPin = function (docElement) {
