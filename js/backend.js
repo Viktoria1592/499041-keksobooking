@@ -16,7 +16,7 @@
     xhr.send(data);
   };
 
-  var URLL = 'https://js.dump.academy/keksobooking/data';
+  URL = 'https://js.dump.academy/keksobooking/data';
 
   window.load = function (onLoad, onError) {  //получение данных
     var xhr = new XMLHttpRequest();
@@ -38,7 +38,7 @@
 
     xhr.timeout = 10000; // 10s
 
-    xhr.open('GET', URLL);
+    xhr.open('GET', URL);
     xhr.send();
   };
 })();

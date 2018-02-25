@@ -22,9 +22,8 @@
   var nearByAds = [];
   window.load(onLoad, onError);
 
-
   var WIDTH_MAP = 1200;
-  var HEIDHT_MAP = 750;
+  var HEIDHT_MAP = 500;
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
   var mapPins = document.querySelector('.map__pins');
@@ -42,6 +41,17 @@
     var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
     return (Math.round(mapLocateX) + ', ' + Math.round(mapLocateY));
   };
+
+  var locationCoordinatesPin = function (docElement) {
+    var body = document.body;
+    var mapLocat = docElem.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
+    return ('left: ' + (mapLocat.x + scrollLeft + mapLocat.width / 2) + 'px; top: ' + (mapLocat.y + scrollTop + mapLocat.height) + 'px;');
+  };
+
+  var initialCoordinatesPin = locationOfAnElement(docElem);
+  var initialCoordinates = locationCoordinatesPin(docElem);
 
   var foo = document.querySelector('.map');
 
@@ -92,8 +102,8 @@
 
       if (docElem.offsetTop - shift.y > HEIDHT_MAP - mapLocat.height) {
         docElem.style.top = HEIDHT_MAP - mapLocat.height + 'px';
-      } else if (docElem.offsetTop - shift.y < 160 - mapLocat.height / 2) {
-        docElem.style.top = 160 - mapLocat.height / 2 + 'px';
+      } else if (docElem.offsetTop - shift.y < 150 - mapLocat.height / 2) {
+        docElem.style.top = 150 - mapLocat.height / 2 + 'px';
       } else {
         docElem.style.top = (docElem.offsetTop - shift.y) + 'px';
       }
@@ -105,7 +115,6 @@
       } else {
         docElem.style.left = (docElem.offsetLeft - shift.x) + 'px';
       }
-
       noticeForm.querySelector('#address').value = locationOfAnElement(docElem);
     };
 
@@ -142,28 +151,24 @@
   }
   );
 
-  //var uploader = ;
-
   noticeForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(noticeForm), function (response) {
-      noticeForm.querySelector('#title').value = '';
-      noticeForm.querySelector('#type').value = 'flat';
-      noticeForm.querySelector('#price').value = '';
-      noticeForm.querySelector('#timein').value = '12:00';
-      noticeForm.querySelector('#timeout').value = '12:00';
-      noticeForm.querySelector('#room_number').value = '1';
-      noticeForm.querySelector('#capacity').value = '3';
-      noticeForm.querySelector('#description').value = '';
+      noticeForm.reset();
       foo.classList.add('map--faded');
       noticeForm.classList.add('notice__form--disabled');
       var mapPin = document.querySelectorAll('.map__pin');
       for (var i = 1; i < mapPin.length; i++) {
         mapPin[i].style.display = 'none';
       }
-      foo.removeChild(foo.querySelector('.map__card'));
+      var sp2 = document.querySelector('.map__card');
+      if (sp2 !== null) {
+          foo.removeChild(foo.querySelector('.map__card'));
+      }
       for (i = 0; i < fieldsets.length; i++) {
         fieldsets[i].disabled = true;
       }
+      mapLocat.style = initialCoordinates;
+      document.querySelector('#address').value = initialCoordinatesPin;
     }, onError);
     evt.preventDefault();
   });
