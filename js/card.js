@@ -60,7 +60,7 @@
       return newElement;
     };
 
-    for (j = 0; j < 3; j++) {
+    for (j = 0; j < element.offer.photos.length; j++) {
       fragment.appendChild(createImg());
     }
     ulPictures.appendChild(fragment);
