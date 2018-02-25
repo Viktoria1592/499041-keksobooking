@@ -2,7 +2,6 @@
 (function () {
 
   var onLoad = function (mass) {
-    var fragment = document.createDocumentFragment();
     for (var i = 0; i < 8; i++) {
       nearByAds[i] = mass[i];
       fragments.appendChild(window.pin(nearByAds[i]));
@@ -23,7 +22,7 @@
   window.load(onLoad, onError);
 
   var WIDTH_MAP = 1200;
-  var HEIDHT_MAP = 750;
+  var HEIDHT_MAP = 500;
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
@@ -49,10 +48,12 @@
 
   var locationCoordinatesPin = function (docElement) {
     var body = document.body;
-    var mapLocat = docElem.getBoundingClientRect();
+    var mapLocats = map.getClientRects();
+    var mapLocation = docElem.getBoundingClientRect();
     var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
-    return ('left: ' + (mapLocat.x + scrollLeft + mapLocat.width / 2) + 'px; top: ' + (mapLocat.y + scrollTop + mapLocat.height) + 'px;');
+    var i = 0;
+    return ('left: ' + (mapLocation.x + scrollLeft + mapLocation.width / 2 - mapLocats[i].x) + 'px; top: ' + (mapLocation.y + scrollTop + mapLocation.height) + 'px;');
   };
 
   var initialCoordinatesPin = locationOfAnElement(docElem);
@@ -78,7 +79,7 @@
     for (i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
-    document.querySelector('#address').setAttribute("readonly", true);
+    document.querySelector('#address').setAttribute('readonly', true);
   }
   );
 
@@ -103,8 +104,8 @@
         y: moveEvt.clientY
       };
 
-      if (docElem.offsetTop - shift.y > HEIDHT_MAP - mapLocat.height) {
-        docElem.style.top = HEIDHT_MAP - mapLocat.height + 'px';
+      if (docElem.offsetTop - shift.y > HEIDHT_MAP - mapLocat.height / 2) {
+        docElem.style.top = HEIDHT_MAP - mapLocat.height / 2 + 'px';
       } else if (docElem.offsetTop - shift.y < 150 - mapLocat.height / 2) {
         docElem.style.top = 150 - mapLocat.height / 2 + 'px';
       } else {
@@ -155,9 +156,9 @@
   );
 
   noticeForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(noticeForm), function (response) {
+    window.upload(new FormData(noticeForm), function () {
       noticeForm.reset();
-      foo.classList.add('map--faded');
+      map.classList.add('map--faded');
       noticeForm.classList.add('notice__form--disabled');
       var mapPin = document.querySelectorAll('.map__pin');
       for (var i = 1; i < mapPin.length; i++) {
