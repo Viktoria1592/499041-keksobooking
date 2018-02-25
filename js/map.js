@@ -1,7 +1,5 @@
 'use strict';
 (function () {
-  var ESC_KEYCODE = 27;
-
   var onLoad = function (mass) {
     for (var i = 0; i < 8; i++) {
       nearByAds[i] = mass[i];
@@ -20,7 +18,7 @@
   };
 
   var nearByAds = [];
-  window.load(onLoad, onError);
+  window.loader(onLoad, onError);
 
   var WIDTH_MAP = 1200;
   var HEIDHT_MAP = 500;
@@ -134,36 +132,40 @@
     var activeElement = evt.target;
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = mapPins.querySelectorAll('img');
+    var mapCard = document.querySelector('.map__card');
     for (var i = 0; i < mapPin.length - 1; i++) {
-      var sp2 = document.querySelector('.map__card');
       if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
-        if (sp2 !== null) {
+        if (mapCard !== null) {
           var sp1 = map.appendChild(window.card(nearByAds[i]));
-          map.replaceChild(sp1, sp2);
+          map.replaceChild(sp1, mapCard);
         } else {
           map.appendChild(window.card(nearByAds[i]));
         }
       } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
-        if (sp2 !== null) {
-          map.removeChild(map.querySelector('.map__card'));
+        if (mapCard !== null) {
+          map.removeChild(mapCard);
         }
       }
     }
-    var mapCard = map.querySelector('.map__card');
-    var closePopup = function () {
-      map.removeChild(mapCard);
-    };
+    mapCard = document.querySelector('.map__card');
+    if (mapCard !== null) {
+      var mapCardClose = mapCard.querySelector('.popup__close');
+      var ESC_KEYCODE = 27;
 
-    var mapCardClose = mapCard.querySelector('.popup__close');
-    mapCardClose.addEventListener('click', function () {
-      closePopup();
-    });
+      var closePopup = function () {
+        map.removeChild(mapCard);
+      };
 
-    mapCardClose.addEventListener('keydown', function () {
-      if (evt.keyCode === ESC_KEYCODE) {
+      mapCardClose.addEventListener('click', function () {
         closePopup();
-      }
-    });
+      });
+
+      mapCardClose.addEventListener('keydown', function () {
+        if (evt.keyCode === ESC_KEYCODE) {
+          closePopup();
+        }
+      });
+    }
   }
   );
 
