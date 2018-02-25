@@ -23,9 +23,10 @@
   window.load(onLoad, onError);
 
   var WIDTH_MAP = 1200;
-  var HEIDHT_MAP = 500;
+  var HEIDHT_MAP = 750;
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
+  var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
   var fragment = document.createDocumentFragment();
   var fragments = document.createDocumentFragment();
@@ -34,11 +35,15 @@
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
-    var mapLocat = docElem.getBoundingClientRect();
+    var mapLocats = map.getClientRects();
+    var mapLocation = docElem.getBoundingClientRect();
     var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
-    var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2;
-    var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
+    for (var i = 0; i < mapLocats.length; i++) {
+      var mapLocateX = mapLocation.x + scrollLeft + mapLocation.width / 2 - mapLocats[i].x;
+      var mapLocateY = mapLocation.y + scrollTop + mapLocation.height;
+    }
+
     return Math.round(mapLocateX) + ', ' + Math.round(mapLocateY);
   };
 
@@ -53,8 +58,6 @@
   var initialCoordinatesPin = locationOfAnElement(docElem);
   var initialCoordinates = locationCoordinatesPin(docElem);
 
-  var foo = document.querySelector('.map');
-
   document.querySelector('#address').value = locationOfAnElement(docElem);
 
   var enableFieldsets = function (mass) {
@@ -64,18 +67,18 @@
   };
 
   docElem.addEventListener('mouseup', function () {
-    foo.classList.remove('map--faded');
+    map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
-    foo.appendChild(fragments);
+    map.appendChild(fragments);
     var i = 0;
     fragment.appendChild(window.card(nearByAds[i]));
-    foo.appendChild(fragment);
+    map.appendChild(fragment);
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
-    document.querySelector('#address').disabled = true;
+    document.querySelector('#address').setAttribute("readonly", true);
   }
   );
 
@@ -137,14 +140,14 @@
       var sp2 = document.querySelector('.map__card');
       if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
         if (sp2 !== null) {
-          var sp1 = foo.appendChild(window.card(nearByAds[i]));
-          foo.replaceChild(sp1, sp2);
+          var sp1 = map.appendChild(window.card(nearByAds[i]));
+          map.replaceChild(sp1, sp2);
         } else {
-          foo.appendChild(window.card(nearByAds[i]));
+          map.appendChild(window.card(nearByAds[i]));
         }
       } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
         if (sp2 !== null) {
-          foo.removeChild(foo.querySelector('.map__card'));
+          map.removeChild(map.querySelector('.map__card'));
         }
       }
     }
@@ -162,7 +165,7 @@
       }
       var sp2 = document.querySelector('.map__card');
       if (sp2 !== null) {
-          foo.removeChild(foo.querySelector('.map__card'));
+        map.removeChild(map.querySelector('.map__card'));
       }
       for (i = 0; i < fieldsets.length; i++) {
         fieldsets[i].disabled = true;
