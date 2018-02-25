@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var ESC_KEYCODE = 27;
 
   var onLoad = function (mass) {
     for (var i = 0; i < 8; i++) {
@@ -27,7 +28,6 @@
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
-  var fragment = document.createDocumentFragment();
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
@@ -72,11 +72,8 @@
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
     map.appendChild(fragments);
-    var i = 0;
-    fragment.appendChild(window.card(nearByAds[i]));
-    map.appendChild(fragment);
     var mapPin = document.querySelectorAll('.map__pin');
-    for (i = 0; i < mapPin.length; i++) {
+    for (var i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
     document.querySelector('#address').setAttribute('readonly', true);
@@ -152,6 +149,21 @@
         }
       }
     }
+    var mapCard = map.querySelector('.map__card');
+    var closePopup = function () {
+      map.removeChild(mapCard);
+    };
+
+    var mapCardClose = mapCard.querySelector('.popup__close');
+    mapCardClose.addEventListener('click', function () {
+      closePopup();
+    });
+
+    mapCardClose.addEventListener('keydown', function () {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closePopup();
+      }
+    });
   }
   );
 
