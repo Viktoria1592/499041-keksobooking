@@ -28,7 +28,6 @@
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
-  var fragment = document.createDocumentFragment();
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
@@ -153,7 +152,6 @@
     var mapCard = map.querySelector('.map__card');
     var closePopup = function () {
       map.removeChild(mapCard);
-      document.removeEventListener('keydown', onPopupEscPress);
     };
 
     var mapCardClose = mapCard.querySelector('.popup__close');
@@ -161,7 +159,7 @@
       closePopup();
     });
 
-    mapCardClose.addEventListener('keydown', function (evt) {
+    mapCardClose.addEventListener('keydown', function () {
       if (evt.keyCode === ESC_KEYCODE) {
         closePopup();
       }
