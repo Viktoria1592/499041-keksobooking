@@ -72,11 +72,8 @@
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
     map.appendChild(fragments);
-    var i = 0;
-    fragment.appendChild(window.card(nearByAds[i]));
-    map.appendChild(fragment);
     var mapPin = document.querySelectorAll('.map__pin');
-    for (i = 0; i < mapPin.length; i++) {
+    for (var i = 0; i < mapPin.length; i++) {
       mapPin[i].style.display = '';
     }
     document.querySelector('#address').setAttribute('readonly', true);
