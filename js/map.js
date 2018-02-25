@@ -49,14 +49,11 @@
   var locationCoordinatesPin = function (docElement) {
     var body = document.body;
     var mapLocats = map.getClientRects();
-    var mapLocat = docElem.getBoundingClientRect();
+    var mapLocation = docElem.getBoundingClientRect();
     var scrollTop = window.pageYOffset || docElement.scrollTop || body.scrollTop;
     var scrollLeft = window.pageXOffset || docElement.scrollLeft || body.scrollLeft;
-    for (var i = 0; i < mapLocats.length; i++) {
-      var mapLocateX = mapLocat.x + scrollLeft + mapLocat.width / 2 - mapLocats[i].x;
-      var mapLocateY = mapLocat.y + scrollTop + mapLocat.height;
-    }
-    return ('left: ' + (mapLocat.x + scrollLeft + mapLocat.width / 2) + 'px; top: ' + (mapLocat.y + scrollTop + mapLocat.height) + 'px;');
+    var i = 0;
+    return ('left: ' + (mapLocation.x + scrollLeft + mapLocation.width / 2 - mapLocats[i].x) + 'px; top: ' + (mapLocation.y + scrollTop + mapLocation.height) + 'px;');
   };
 
   var initialCoordinatesPin = locationOfAnElement(docElem);
