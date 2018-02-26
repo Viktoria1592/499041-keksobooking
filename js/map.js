@@ -5,7 +5,6 @@
       nearByAds[i] = mass[i];
       fragments.appendChild(window.pin(nearByAds[i]));
     }
-    mapPins.appendChild(fragments);
   };
 
   var onError = function (errorMessage) {
@@ -71,8 +70,12 @@
     enableFieldsets(fieldsets);
     map.appendChild(fragments);
     var mapPin = document.querySelectorAll('.map__pin');
-    for (var i = 0; i < mapPin.length; i++) {
-      mapPin[i].style.display = '';
+    for (var i = 1; i < mapPin.length; i++) {
+      if (i <= 5) {
+        mapPin[i].style.display = '';
+      } else {
+        mapPin[i].style.display = 'none';
+      }
     }
     document.querySelector('#address').setAttribute('readonly', true);
   }
@@ -128,10 +131,10 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  mapPins.addEventListener('click', function (evt) {
+  map.addEventListener('click', function (evt) {
     var activeElement = evt.target;
     var mapPin = document.querySelectorAll('.map__pin');
-    var imgPin = mapPins.querySelectorAll('img');
+    var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
     for (var i = 0; i < mapPin.length - 1; i++) {
       if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
@@ -168,6 +171,50 @@
     }
   }
   );
+
+  var filters = document.querySelector('.map__filters');
+  filters.addEventListener('click', function (evt) {
+    var housingType = filters.querySelector('#housing-type');
+    var housingPrice = filters.querySelector('#housing-price');
+    var housingRooms = filters.querySelector('#housing-rooms');
+    var housingGuests = filters.querySelector('#housing-guests');
+    var filterWifi = filters.querySelector('#filter-wifi');
+    var filterDishwasher = filters.querySelector('#filter-dishwasher');
+    var filterParking = filters.querySelector('#filter-parking');
+    var filterWasher = filters.querySelector('#filter-washer');
+    var filterElevator = filters.querySelector('#filter-elevator');
+    var filterConditioner = filters.querySelector('#filter-conditioner');
+
+    var mapPin = document.querySelectorAll('.map__pin');
+    for (var i = 0; i < mapPin.length - 1; i++) {
+      mapPin[i + 1].style.display = 'none';
+    }
+
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard !== null) {
+      map.removeChild(mapCard);
+    }
+
+    if (housingType.value !== 'any') {
+      for (i = 0; i < mapPin.length - 1; i++) {
+        if (housingType.value === nearByAds[i].offer.type) {
+          mapPin[i + 1].style.display = '';
+        }
+      }
+    } else {
+      for (i = 0; i < 5; i++) {
+        mapPin[i + 1].style.display = '';
+      }
+    }
+    if (housingPrice.value !== 'any') {
+      for (i = 0; i < mapPin.length - 1; i++) {
+        if (housingPrice.value === 'middle' && nearByAds[i].offer.price > 10000 && nearByAds[i].offer.price < 50000) {
+          mapPin[i + 1].style.display = 'none';
+        }
+      }
+    }
+
+  });
 
   noticeForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(noticeForm), function () {
