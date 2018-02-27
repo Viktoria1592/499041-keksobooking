@@ -19,8 +19,6 @@
       newMass[i] = mapPin2[i].cloneNode(true);
     }
 
-    console.log(newMass);
-
     if (housingType.value !== 'any') {
       for (i = 0; i < mapPin2.length - 1; i++) {
         if (housingType.value !== nearByAds[i].offer.type) {
