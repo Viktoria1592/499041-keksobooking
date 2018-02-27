@@ -137,14 +137,16 @@
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
-    for (var i = 0; i < mapPin.length - 1; i++) {
-      if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
-        if (mapCard !== null) {
-          var sp1 = map.appendChild(window.card(nearByAds[i]));
-          map.replaceChild(sp1, mapCard);
-        } else {
-          map.appendChild(window.card(nearByAds[i]));
-        }
+    var activeElemsrc = activeElement.src.split('499041-keksobooking/');
+    for (var i = 0; i < nearByAds.length; i++) {
+      if (activeElemsrc[1] === nearByAds[i].author.avatar) {
+          if (mapCard !== null) {
+            var sp1 = map.appendChild(window.card(nearByAds[i]));
+            console.log(sp1);
+            map.replaceChild(sp1, mapCard);
+          } else {
+            map.appendChild(window.card(nearByAds[i]));
+          }
       } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
         if (mapCard !== null) {
           map.removeChild(mapCard);
@@ -179,7 +181,10 @@
     if (mapCard !== null) {
       map.removeChild(mapCard);
     }
-    window.filter(nearByAds, mapPin2);
+    for (var i = 1; i < mapPin2.length; i++) {
+      map.removeChild(mapPin2[i]);
+    }
+    window.filter(nearByAds);
   });
 
   noticeForm.addEventListener('submit', function (evt) {

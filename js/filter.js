@@ -11,47 +11,44 @@
   var filterWasher = filters.querySelector('#filter-washer');
   var filterElevator = filters.querySelector('#filter-elevator');
   var filterConditioner = filters.querySelector('#filter-conditioner');
+  var map = document.querySelector('.map');
+  var fragments = document.createDocumentFragment();
 
-  var newMass = [];
+  window.filter = function (nearByAds) {
 
-  window.filter = function (nearByAds, mapPin2) {
-    for (var i = 0; i < mapPin2.length; i++) {
-      newMass[i] = mapPin2[i].cloneNode(true);
-    }
+    var newMass = [];
 
     if (housingType.value !== 'any') {
-      for (i = 0; i < mapPin2.length - 1; i++) {
-        if (housingType.value !== nearByAds[i].offer.type) {
-          newMass[i + 1] = '';
+      for ( var i = 0; i < nearByAds.length; i++) {
+        if (housingType.value === nearByAds[i].offer.type) {
+          newMass.push(nearByAds[i]);
         }
-
       }
     }
 
     if (housingPrice.value !== 'any') {
-      for (i = 0; i < mapPin2.length - 1; i++) {
-        newMass[i + 1] = '';
-        if (housingPrice.value === 'middle' && nearByAds[i].offer.price >= 10000 && nearByAds[i].offer.price <= 50000) {
-          newMass[i + 1] = 'true';
-        } else if (housingPrice.value === 'low' && nearByAds[i].offer.price < 10000) {
-          newMass[i + 1] = 'true';
-        } else if (housingPrice.value === 'high' && nearByAds[i].offer.price > 50000) {
-          newMass[i + 1] = 'true';
+      for (i = newMass.length - 1; i >= 0; i++) {
+        if (housingPrice.value === 'middle' && newMass[i].offer.price < 10000 || newMass[i].offer.price > 50000) {
+          newMass.splice(i, 1);
+        } else if (housingPrice.value === 'low' && newMass[i].offer.price >= 10000) {
+          newMass.splice(i, 1);
+        } else if (housingPrice.value === 'high' && newMass[i].offer.price <= 50000) {
+          newMass.splice(i, 1);
         }
       }
     }
 
-    if (housingRooms.value !== 'any') {
-      for (i = 0; i < mapPin2.length - 1; i++) {
-        if (housingRooms.value + '' !== nearByAds[i].offer.rooms + '') {
+    /*if (housingRooms.value !== 'any') {
+      for (i = 0; i < newMass.length; i++) {
+        if (housingRooms.value + '' !== newMass[i].offer.rooms + '') {
           newMass[i + 1] = '';
         }
       }
     }
 
     if (housingGuests.value !== 'any') {
-      for (i = 0; i < mapPin2.length - 1; i++) {
-        if (housingGuests.value + '' !== nearByAds[i].offer.guests + '') {
+      for (i = 0; i < newMass.length; i++) {
+        if (housingGuests.value + '' !== newMass[i].offer.guests + '') {
           newMass[i + 1] = '';
         }
       }
@@ -59,11 +56,11 @@
 
     var filter = function (filterses) {
       if (filterses.checked === true) {
-        for (i = 0; i < mapPin2.length - 1; i++) {
-          if (nearByAds[i].offer.features.length !== 0 && newMass[i + 1] !== '') {
-            for (var k = 0; k < nearByAds[i].offer.features.length; k++) {
-              if (nearByAds[i].offer.features[k] === filterses.value) {
-                k = nearByAds[i].offer.features.length;
+        for (i = 0; i < newMass.length; i++) {
+          if (newMass[i].offer.features.length !== 0) {
+            for (var k = 0; k < newMass[i].offer.features.length; k++) {
+              if (newMass[i].offer.features[k] === filterses.value) {
+                k = newMass[i].offer.features.length;
                 newMass[i + 1] = 'true';
               } else {
                 newMass[i + 1] = '';
@@ -81,21 +78,17 @@
     filter(filterParking);
     filter(filterWasher);
     filter(filterElevator);
-    filter(filterConditioner);
+    filter(filterConditioner);*/
 
-    var j = 0;
-
-    for (i = 0; i < mapPin2.length - 1; i++) {
-      if (newMass[i + 1] !== '') {
-        j++;
-        if (j <= 5) {
-          mapPin2[i + 1].style.display = '';
-        } else {
-          mapPin2[i + 1].style.display = 'none';
-        }
-      } else {
-        mapPin2[i + 1].style.display = 'none';
-      }
+    for (i = 0; i < newMass.length; i++) {
+      fragments.appendChild(window.pin(newMass[i]));
+    }
+    map.appendChild(fragments);
+    var mapPin = document.querySelectorAll('.map__pin');
+    for (i = 0; i < mapPin.length; i++) {
+      mapPin[i].style.display = '';
     }
   };
-})();
+})()
+
+
