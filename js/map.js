@@ -5,6 +5,7 @@
       nearByAds[i] = mass[i];
       fragments.appendChild(window.pin(nearByAds[i]));
     }
+    map.appendChild(fragments);
   };
 
   var onError = function (errorMessage) {
@@ -28,6 +29,7 @@
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
+  var filters = document.querySelector('.map__filters');
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
@@ -68,7 +70,7 @@
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
-    map.appendChild(fragments);
+    filters.reset();
     var mapPin = document.querySelectorAll('.map__pin');
     for (var i = 1; i < mapPin.length; i++) {
       if (i <= 5) {
@@ -172,48 +174,13 @@
   }
   );
 
-  var filters = document.querySelector('.map__filters');
-  filters.addEventListener('click', function (evt) {
-    var housingType = filters.querySelector('#housing-type');
-    var housingPrice = filters.querySelector('#housing-price');
-    var housingRooms = filters.querySelector('#housing-rooms');
-    var housingGuests = filters.querySelector('#housing-guests');
-    var filterWifi = filters.querySelector('#filter-wifi');
-    var filterDishwasher = filters.querySelector('#filter-dishwasher');
-    var filterParking = filters.querySelector('#filter-parking');
-    var filterWasher = filters.querySelector('#filter-washer');
-    var filterElevator = filters.querySelector('#filter-elevator');
-    var filterConditioner = filters.querySelector('#filter-conditioner');
-
-    var mapPin = document.querySelectorAll('.map__pin');
-    for (var i = 0; i < mapPin.length - 1; i++) {
-      mapPin[i + 1].style.display = 'none';
-    }
-
-    var mapCard = document.querySelector('.map__card');
+  filters.addEventListener('click', function () {
+  	var mapPin2 = document.querySelectorAll('.map__pin');
+  	var mapCard = document.querySelector('.map__card');
     if (mapCard !== null) {
       map.removeChild(mapCard);
     }
-
-    if (housingType.value !== 'any') {
-      for (i = 0; i < mapPin.length - 1; i++) {
-        if (housingType.value === nearByAds[i].offer.type) {
-          mapPin[i + 1].style.display = '';
-        }
-      }
-    } else {
-      for (i = 0; i < 5; i++) {
-        mapPin[i + 1].style.display = '';
-      }
-    }
-    if (housingPrice.value !== 'any') {
-      for (i = 0; i < mapPin.length - 1; i++) {
-        if (housingPrice.value === 'middle' && nearByAds[i].offer.price > 10000 && nearByAds[i].offer.price < 50000) {
-          mapPin[i + 1].style.display = 'none';
-        }
-      }
-    }
-
+  	window.filter(nearByAds, mapPin2);
   });
 
   noticeForm.addEventListener('submit', function (evt) {
