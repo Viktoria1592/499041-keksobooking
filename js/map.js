@@ -25,7 +25,6 @@
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
@@ -175,12 +174,12 @@
   );
 
   filters.addEventListener('click', function () {
-  	var mapPin2 = document.querySelectorAll('.map__pin');
-  	var mapCard = document.querySelector('.map__card');
+    var mapPin2 = document.querySelectorAll('.map__pin');
+    var mapCard = document.querySelector('.map__card');
     if (mapCard !== null) {
       map.removeChild(mapCard);
     }
-  	window.filter(nearByAds, mapPin2);
+    window.filter(nearByAds, mapPin2);
   });
 
   noticeForm.addEventListener('submit', function (evt) {

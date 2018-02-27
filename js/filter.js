@@ -19,6 +19,8 @@
       newMass[i] = mapPin2[i].cloneNode(true);
     }
 
+    console.log(newMass);
+
     if (housingType.value !== 'any') {
       for (i = 0; i < mapPin2.length - 1; i++) {
         if (housingType.value !== nearByAds[i].offer.type) {
@@ -29,15 +31,14 @@
     }
 
     if (housingPrice.value !== 'any') {
-      for (i = 0; i < newMass.length - 1; i++) {
+      for (i = 0; i < mapPin2.length - 1; i++) {
+        newMass[i + 1] = '';
         if (housingPrice.value === 'middle' && nearByAds[i].offer.price >= 10000 && nearByAds[i].offer.price <= 50000) {
-
-        }  else if (housingPrice.value === 'low' && nearByAds[i].offer.price < 10000) {
-
+          newMass[i + 1] = 'true';
+        } else if (housingPrice.value === 'low' && nearByAds[i].offer.price < 10000) {
+          newMass[i + 1] = 'true';
         } else if (housingPrice.value === 'high' && nearByAds[i].offer.price > 50000) {
-
-        } else {
-          newMass[i + 1] = '';
+          newMass[i + 1] = 'true';
         }
       }
     }
@@ -58,12 +59,12 @@
       }
     }
 
-    var filter = function (filters) {
-      if (filters.checked === true) {
+    var filter = function (filterses) {
+      if (filterses.checked === true) {
         for (i = 0; i < mapPin2.length - 1; i++) {
           if (nearByAds[i].offer.features.length !== 0 && newMass[i + 1] !== '') {
             for (var k = 0; k < nearByAds[i].offer.features.length; k++) {
-              if (nearByAds[i].offer.features[k] === filters.value) {
+              if (nearByAds[i].offer.features[k] === filterses.value) {
                 k = nearByAds[i].offer.features.length;
                 newMass[i + 1] = 'true';
               } else {
@@ -75,7 +76,7 @@
           }
         }
       }
-    }
+    };
 
     filter(filterWifi);
     filter(filterDishwasher);
@@ -98,5 +99,5 @@
         mapPin2[i + 1].style.display = 'none';
       }
     }
-  }
+  };
 })();
