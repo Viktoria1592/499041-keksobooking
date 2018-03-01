@@ -69,7 +69,8 @@
             }
           }
         }
-      } else {
+      }
+      if (filterses.checked !== true) {
         return true;
       }
     }
