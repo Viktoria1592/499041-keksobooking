@@ -137,7 +137,7 @@
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
-    if (activeElement.src !== undefined) {
+    if (activeElement.src + '' !== 'undefined') {
       var activeElemsrc = activeElement.src.split('499041-keksobooking/');
       for (var i = 0; i < nearByAds.length; i++) {
         if (activeElemsrc[1] === nearByAds[i].author.avatar) {
@@ -147,9 +147,9 @@
           } else {
             map.appendChild(window.card(nearByAds[i]));
           }
-        } 
+        }
       }
-    } 
+    }
     if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
       if (mapCard !== null) {
         map.removeChild(mapCard);
