@@ -29,10 +29,10 @@
       if (housingPrice.value !== 'any') {
         if (housingPrice.value === 'middle' && element.offer.price >= 10000 && element.offer.price <= 50000) {
           return element;
-        } 
+        }
         if (housingPrice.value === 'low' && element.offer.price < 10000) {
           return element;
-        } 
+        }
         if (housingPrice.value === 'high' && element.offer.price > 50000) {
           return element;
         }
@@ -72,26 +72,26 @@
       } else {
         return element;
       }
-    };
+    }
 
-    function filtWifi (element) {
-      return filteres (element, filterWifi);
-    };
-    function filtDish (element) {
-      return filteres (element, filterDishwasher);
-    };
-    function filtPark (element) {
-      return filteres (element, filterParking);
-    };
-    function filtWash (element) {
-      return filteres (element, filterWasher);
-    };
-    function filtElev (element) {
-      return filteres (element, filterElevator);
-    };
-    function filtCond (element) {
-      return filteres (element, filterConditioner);
-    };
+    function filtWifi(element) {
+      return filteres(element, filterWifi);
+    }
+    function filtDish(element) {
+      return filteres(element, filterDishwasher);
+    }
+    function filtPark(element) {
+      return filteres(element, filterParking);
+    }
+    function filtWash(element) {
+      return filteres(element, filterWasher);
+    }
+    function filtElev(element) {
+      return filteres(element, filterElevator);
+    }
+    function filtCond(element) {
+      return filteres(element, filterConditioner);
+    }
 
     var typeMass = nearByAds.filter(housingTypeFilter);
     var pricMass = typeMass.filter(housingPriceFilter);
@@ -111,13 +111,9 @@
     map.appendChild(fragments);
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 0; i < mapPin.length; i++) {
-      if(i < 6) {
+      if (i < 6) {
         mapPin[i].style.display = '';
       }
     }
   };
-})()
-
-
-
-
+})();
