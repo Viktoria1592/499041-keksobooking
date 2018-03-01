@@ -37,7 +37,7 @@
           return true;
         }
         return false;
-      } 
+      }
       return true;
     }
     function housingRoomsFilter(element) {
