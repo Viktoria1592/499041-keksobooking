@@ -19,58 +19,58 @@
     function housingTypeFilter(element) {
       if (housingType.value !== 'any') {
         if (housingType.value === element.offer.type) {
-          return element;
+          return true;
         }
       } else {
-        return element;
+        return true;
       }
     }
     function housingPriceFilter(element) {
       if (housingPrice.value !== 'any') {
         if (housingPrice.value === 'middle' && element.offer.price >= 10000 && element.offer.price <= 50000) {
-          return element;
+          return true;
         }
         if (housingPrice.value === 'low' && element.offer.price < 10000) {
-          return element;
+          return true;
         }
         if (housingPrice.value === 'high' && element.offer.price > 50000) {
-          return element;
+          return true;
         }
       } else {
-        return element;
+        return true;
       }
     }
     function housingRoomsFilter(element) {
       if (housingRooms.value !== 'any') {
         if (housingRooms.value + '' === element.offer.rooms + '') {
-          return element;
+          return true;
         }
       } else {
-        return element;
+        return true;
       }
     }
     function housingGuestsFilter(element) {
       if (housingGuests.value !== 'any') {
         if (housingGuests.value + '' === element.offer.guests + '') {
-          return element;
+          return true;
         }
       } else {
-        return element;
+        return true;
       }
     }
 
-    function filteres (element, filterses) {
+    function filteres(element, filterses) {
       if (filterses.checked === true) {
         if (element.offer.features.length !== 0) {
           for (var k = 0; k < element.offer.features.length; k++) {
             if (element.offer.features[k] === filterses.value) {
               k = element.offer.features.length;
-              return element;
-            } 
+              return true;
+            }
           }
         }
       } else {
-        return element;
+        return true;
       }
     }
 
