@@ -11,8 +11,6 @@
   var filterWasher = filters.querySelector('#filter-washer');
   var filterElevator = filters.querySelector('#filter-elevator');
   var filterConditioner = filters.querySelector('#filter-conditioner');
-  var map = document.querySelector('.map');
-  var fragments = document.createDocumentFragment();
 
   function housingTypeFilter(element) {
     if (housingType.value === 'any') {
@@ -90,9 +88,9 @@
   }
 
   window.filter = function (nearByAds) {
-    return nearByAds.filter(function(item) {
-       return housingTypeFilter(item) && housingPriceFilter(item) && housingRoomsFilter(item) && 
-      housingGuestsFilter(item) && filtWifi(item) && filtDish(item) && filtPark(item) && 
+    return nearByAds.filter(function (item) {
+      return housingTypeFilter(item) && housingPriceFilter(item) && housingRoomsFilter(item) &&
+      housingGuestsFilter(item) && filtWifi(item) && filtDish(item) && filtPark(item) &&
       filtWash(item) && filtElev(item) && filtCond(item) === true;
     });
   };
