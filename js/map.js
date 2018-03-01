@@ -1,11 +1,10 @@
 'use strict';
 (function () {
   var onLoad = function (mass) {
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < mass.length; i++) {
       nearByAds[i] = mass[i];
-      fragments.appendChild(window.pin(nearByAds[i]));
     }
-    map.appendChild(fragments);
+    mapsPin(nearByAds);
   };
 
   var onError = function (errorMessage) {
@@ -29,6 +28,13 @@
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
   var filters = document.querySelector('.map__filters');
+
+  var mapsPin = function (mass) {
+    for (var i = 0; i < mass.length; i++) {
+      fragments.appendChild(window.pin(mass[i]));
+    }
+    map.appendChild(fragments);
+  }
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
@@ -138,7 +144,7 @@
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
     if (activeElement.src + '' !== 'undefined') {
-      var activeElemsrc = activeElement.src.split('499041-keksobooking/8/');
+      var activeElemsrc = activeElement.src.split('499041-keksobooking/');
       for (var i = 0; i < nearByAds.length; i++) {
         if (activeElemsrc[1] === nearByAds[i].author.avatar) {
           if (mapCard !== null) {
@@ -147,9 +153,9 @@
           } else {
             map.appendChild(window.card(nearByAds[i]));
           }
-        }
+        } 
       }
-    }
+    } 
     if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
       if (mapCard !== null) {
         map.removeChild(mapCard);
@@ -186,7 +192,14 @@
     for (var i = 1; i < mapPin2.length; i++) {
       map.removeChild(mapPin2[i]);
     }
-    window.filter(nearByAds);
+    var newMassPin = window.filter(nearByAds)
+    mapsPin(newMassPin);
+    var mapPin = document.querySelectorAll('.map__pin');
+    for (i = 0; i < mapPin.length; i++) {
+      if (i < 6) {
+        mapPin[i].style.display = '';
+      }
+    }
   });
 
   noticeForm.addEventListener('submit', function (evt) {
@@ -211,3 +224,4 @@
     evt.preventDefault();
   });
 })();
+
