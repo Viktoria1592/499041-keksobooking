@@ -34,7 +34,7 @@
       fragments.appendChild(window.pin(mass[i]));
     }
     map.appendChild(fragments);
-  }
+  };
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
@@ -153,9 +153,9 @@
           } else {
             map.appendChild(window.card(nearByAds[i]));
           }
-        } 
+        }
       }
-    } 
+    }
     if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
       if (mapCard !== null) {
         map.removeChild(mapCard);
@@ -192,7 +192,7 @@
     for (var i = 1; i < mapPin2.length; i++) {
       map.removeChild(mapPin2[i]);
     }
-    var newMassPin = window.filter(nearByAds)
+    var newMassPin = window.filter(nearByAds);
     mapsPin(newMassPin);
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 0; i < mapPin.length; i++) {
@@ -224,4 +224,3 @@
     evt.preventDefault();
   });
 })();
-
