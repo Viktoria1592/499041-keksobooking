@@ -1,13 +1,10 @@
 'use strict';
 (function () {
-  var ESC_KEYCODE = 27;
-
   var onLoad = function (mass) {
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < mass.length; i++) {
       nearByAds[i] = mass[i];
-      fragments.appendChild(window.pin(nearByAds[i]));
     }
-    mapPins.appendChild(fragments);
+    mapsPin(nearByAds);
   };
 
   var onError = function (errorMessage) {
@@ -20,17 +17,24 @@
   };
 
   var nearByAds = [];
-  window.load(onLoad, onError);
+  window.loader(onLoad, onError);
 
   var WIDTH_MAP = 1200;
   var HEIDHT_MAP = 500;
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
+  var filters = document.querySelector('.map__filters');
+
+  var mapsPin = function (mass) {
+    for (var i = 0; i < mass.length; i++) {
+      fragments.appendChild(window.pin(mass[i]));
+    }
+    map.appendChild(fragments);
+  };
 
   var locationOfAnElement = function (docElement) {
     var body = document.body;
@@ -71,10 +75,14 @@
     map.classList.remove('map--faded');
     noticeForm.classList.remove('notice__form--disabled');
     enableFieldsets(fieldsets);
-    map.appendChild(fragments);
+    filters.reset();
     var mapPin = document.querySelectorAll('.map__pin');
-    for (var i = 0; i < mapPin.length; i++) {
-      mapPin[i].style.display = '';
+    for (var i = 1; i < mapPin.length; i++) {
+      if (i <= 5) {
+        mapPin[i].style.display = '';
+      } else {
+        mapPin[i].style.display = 'none';
+      }
     }
     document.querySelector('#address').setAttribute('readonly', true);
   }
@@ -130,42 +138,69 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  mapPins.addEventListener('click', function (evt) {
+  map.addEventListener('click', function (evt) {
     var activeElement = evt.target;
     var mapPin = document.querySelectorAll('.map__pin');
-    var imgPin = mapPins.querySelectorAll('img');
-    for (var i = 0; i < mapPin.length - 1; i++) {
-      var sp2 = document.querySelector('.map__card');
-      if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
-        if (sp2 !== null) {
-          var sp1 = map.appendChild(window.card(nearByAds[i]));
-          map.replaceChild(sp1, sp2);
-        } else {
-          map.appendChild(window.card(nearByAds[i]));
-        }
-      } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
-        if (sp2 !== null) {
-          map.removeChild(map.querySelector('.map__card'));
+    var imgPin = map.querySelectorAll('img');
+    var mapCard = document.querySelector('.map__card');
+    if (activeElement.src + '' !== 'undefined') {
+      var activeElemsrc = activeElement.src.split('499041-keksobooking/');
+      for (var i = 0; i < nearByAds.length; i++) {
+        if (activeElemsrc[1] === nearByAds[i].author.avatar) {
+          if (mapCard !== null) {
+            var sp1 = map.appendChild(window.card(nearByAds[i]));
+            map.replaceChild(sp1, mapCard);
+          } else {
+            map.appendChild(window.card(nearByAds[i]));
+          }
         }
       }
     }
-    var mapCard = map.querySelector('.map__card');
-    var closePopup = function () {
-      map.removeChild(mapCard);
-    };
-
-    var mapCardClose = mapCard.querySelector('.popup__close');
-    mapCardClose.addEventListener('click', function () {
-      closePopup();
-    });
-
-    mapCardClose.addEventListener('keydown', function () {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closePopup();
+    if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
+      if (mapCard !== null) {
+        map.removeChild(mapCard);
       }
-    });
+    }
+    mapCard = document.querySelector('.map__card');
+    if (mapCard !== null) {
+      var mapCardClose = mapCard.querySelector('.popup__close');
+      var ESC_KEYCODE = 27;
+
+      var closePopup = function () {
+        map.removeChild(mapCard);
+      };
+
+      mapCardClose.addEventListener('click', function () {
+        closePopup();
+      });
+
+      mapCardClose.addEventListener('keydown', function () {
+        if (evt.keyCode === ESC_KEYCODE) {
+          closePopup();
+        }
+      });
+    }
   }
   );
+
+  filters.addEventListener('click', function () {
+    var mapPin2 = document.querySelectorAll('.map__pin');
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard !== null) {
+      map.removeChild(mapCard);
+    }
+    for (var i = 1; i < mapPin2.length; i++) {
+      map.removeChild(mapPin2[i]);
+    }
+    var newMassPin = window.filter(nearByAds);
+    mapsPin(newMassPin);
+    var mapPin = document.querySelectorAll('.map__pin');
+    for (i = 0; i < mapPin.length; i++) {
+      if (i < 6) {
+        mapPin[i].style.display = '';
+      }
+    }
+  });
 
   noticeForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(noticeForm), function () {
