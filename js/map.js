@@ -138,7 +138,7 @@
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
     if (activeElement.src + '' !== 'undefined') {
-      var activeElemsrc = activeElement.src.split('499041-keksobooking/');
+      var activeElemsrc = activeElement.src.split('499041-keksobooking/8/');
       for (var i = 0; i < nearByAds.length; i++) {
         if (activeElemsrc[1] === nearByAds[i].author.avatar) {
           if (mapCard !== null) {
