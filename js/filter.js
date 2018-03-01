@@ -21,9 +21,9 @@
         if (housingType.value === element.offer.type) {
           return true;
         }
-      } else {
-        return true;
+        return false;
       }
+      return true;
     }
     function housingPriceFilter(element) {
       if (housingPrice.value !== 'any') {
@@ -36,27 +36,27 @@
         if (housingPrice.value === 'high' && element.offer.price > 50000) {
           return true;
         }
-      } else {
-        return true;
-      }
+        return false;
+      } 
+      return true;
     }
     function housingRoomsFilter(element) {
       if (housingRooms.value !== 'any') {
         if (housingRooms.value + '' === element.offer.rooms + '') {
           return true;
         }
-      } else {
-        return true;
+        return false;
       }
+      return true;
     }
     function housingGuestsFilter(element) {
       if (housingGuests.value !== 'any') {
         if (housingGuests.value + '' === element.offer.guests + '') {
           return true;
         }
-      } else {
-        return true;
+        return false;
       }
+      return true;
     }
 
     function filteres(element, filterses) {
@@ -67,12 +67,11 @@
               k = element.offer.features.length;
               return true;
             }
+            return false;
           }
         }
       }
-      if (filterses.checked !== true) {
-        return true;
-      }
+      return true;
     }
 
     function filtWifi(element) {
