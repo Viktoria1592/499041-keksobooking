@@ -16,79 +16,108 @@
 
   window.filter = function (nearByAds) {
 
-    var newMass = [];
-
-    if (housingType.value !== 'any') {
-      for ( var i = 0; i < nearByAds.length; i++) {
-        if (housingType.value === nearByAds[i].offer.type) {
-          newMass.push(nearByAds[i]);
+    function housingTypeFilter(element) {
+      if (housingType.value !== 'any') {
+        if (housingType.value === element.offer.type) {
+          return element;
         }
+      } else {
+        return element;
+      }
+    }
+    function housingPriceFilter(element) {
+      if (housingPrice.value !== 'any') {
+        if (housingPrice.value === 'middle' && element.offer.price >= 10000 && element.offer.price <= 50000) {
+          return element;
+        } 
+        if (housingPrice.value === 'low' && element.offer.price < 10000) {
+          return element;
+        } 
+        if (housingPrice.value === 'high' && element.offer.price > 50000) {
+          return element;
+        }
+      } else {
+        return element;
+      }
+    }
+    function housingRoomsFilter(element) {
+      if (housingRooms.value !== 'any') {
+        if (housingRooms.value + '' === element.offer.rooms + '') {
+          return element;
+        }
+      } else {
+        return element;
+      }
+    }
+    function housingGuestsFilter(element) {
+      if (housingGuests.value !== 'any') {
+        if (housingGuests.value + '' === element.offer.guests + '') {
+          return element;
+        }
+      } else {
+        return element;
       }
     }
 
-    if (housingPrice.value !== 'any') {
-      for (i = newMass.length - 1; i >= 0; i++) {
-        if (housingPrice.value === 'middle' && newMass[i].offer.price < 10000 || newMass[i].offer.price > 50000) {
-          newMass.splice(i, 1);
-        } else if (housingPrice.value === 'low' && newMass[i].offer.price >= 10000) {
-          newMass.splice(i, 1);
-        } else if (housingPrice.value === 'high' && newMass[i].offer.price <= 50000) {
-          newMass.splice(i, 1);
-        }
-      }
-    }
-
-    /*if (housingRooms.value !== 'any') {
-      for (i = 0; i < newMass.length; i++) {
-        if (housingRooms.value + '' !== newMass[i].offer.rooms + '') {
-          newMass[i + 1] = '';
-        }
-      }
-    }
-
-    if (housingGuests.value !== 'any') {
-      for (i = 0; i < newMass.length; i++) {
-        if (housingGuests.value + '' !== newMass[i].offer.guests + '') {
-          newMass[i + 1] = '';
-        }
-      }
-    }
-
-    var filter = function (filterses) {
+    function filteres (element, filterses) {
       if (filterses.checked === true) {
-        for (i = 0; i < newMass.length; i++) {
-          if (newMass[i].offer.features.length !== 0) {
-            for (var k = 0; k < newMass[i].offer.features.length; k++) {
-              if (newMass[i].offer.features[k] === filterses.value) {
-                k = newMass[i].offer.features.length;
-                newMass[i + 1] = 'true';
-              } else {
-                newMass[i + 1] = '';
-              }
-            }
-          } else {
-            newMass[i + 1] = '';
+        if (element.offer.features.length !== 0) {
+          for (var k = 0; k < element.offer.features.length; k++) {
+            if (element.offer.features[k] === filterses.value) {
+              k = element.offer.features.length;
+              return element;
+            } 
           }
         }
+      } else {
+        return element;
       }
     };
 
-    filter(filterWifi);
-    filter(filterDishwasher);
-    filter(filterParking);
-    filter(filterWasher);
-    filter(filterElevator);
-    filter(filterConditioner);*/
+    function filtWifi (element) {
+      return filteres (element, filterWifi);
+    };
+    function filtDish (element) {
+      return filteres (element, filterDishwasher);
+    };
+    function filtPark (element) {
+      return filteres (element, filterParking);
+    };
+    function filtWash (element) {
+      return filteres (element, filterWasher);
+    };
+    function filtElev (element) {
+      return filteres (element, filterElevator);
+    };
+    function filtCond (element) {
+      return filteres (element, filterConditioner);
+    };
 
-    for (i = 0; i < newMass.length; i++) {
-      fragments.appendChild(window.pin(newMass[i]));
+    var typeMass = nearByAds.filter(housingTypeFilter);
+    var pricMass = typeMass.filter(housingPriceFilter);
+    var roomMass = pricMass.filter(housingRoomsFilter);
+    var guestMass = roomMass.filter(housingGuestsFilter);
+
+    var wifiMass = guestMass.filter(filtWifi);
+    var dishMass = wifiMass.filter(filtDish);
+    var parkMass = dishMass.filter(filtPark);
+    var washMass = parkMass.filter(filtWash);
+    var elevMass = washMass.filter(filtElev);
+    var conditMass = elevMass.filter(filtCond);
+
+    for (var i = 0; i < conditMass.length; i++) {
+      fragments.appendChild(window.pin(conditMass[i]));
     }
     map.appendChild(fragments);
     var mapPin = document.querySelectorAll('.map__pin');
     for (i = 0; i < mapPin.length; i++) {
-      mapPin[i].style.display = '';
+      if(i < 6) {
+        mapPin[i].style.display = '';
+      }
     }
   };
 })()
+
+
 
 
