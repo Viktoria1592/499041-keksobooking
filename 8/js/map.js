@@ -25,7 +25,6 @@
   var docElem = document.querySelector('.map__pin--main');
   var mapLocat = docElem.getBoundingClientRect();
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var fragments = document.createDocumentFragment();
   var fieldsets = document.querySelectorAll('fieldset');
   var noticeForm = document.querySelector('.notice__form');
@@ -138,18 +137,22 @@
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
-    for (var i = 0; i < mapPin.length - 1; i++) {
-      if (activeElement.style === mapPin[i + 1].style || activeElement.src === imgPin[i + 1].src) {
-        if (mapCard !== null) {
-          var sp1 = map.appendChild(window.card(nearByAds[i]));
-          map.replaceChild(sp1, mapCard);
-        } else {
-          map.appendChild(window.card(nearByAds[i]));
-        }
-      } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
-        if (mapCard !== null) {
-          map.removeChild(mapCard);
-        }
+    if (activeElement.src !== undefined) {
+      var activeElemsrc = activeElement.src.split('499041-keksobooking/');
+      for (var i = 0; i < nearByAds.length; i++) {
+        if (activeElemsrc[1] === nearByAds[i].author.avatar) {
+          if (mapCard !== null) {
+            var sp1 = map.appendChild(window.card(nearByAds[i]));
+            map.replaceChild(sp1, mapCard);
+          } else {
+            map.appendChild(window.card(nearByAds[i]));
+          }
+        } 
+      }
+    } 
+    if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
+      if (mapCard !== null) {
+        map.removeChild(mapCard);
       }
     }
     mapCard = document.querySelector('.map__card');
@@ -175,12 +178,15 @@
   );
 
   filters.addEventListener('click', function () {
-  	var mapPin2 = document.querySelectorAll('.map__pin');
-  	var mapCard = document.querySelector('.map__card');
+    var mapPin2 = document.querySelectorAll('.map__pin');
+    var mapCard = document.querySelector('.map__card');
     if (mapCard !== null) {
       map.removeChild(mapCard);
     }
-  	window.filter(nearByAds, mapPin2);
+    for (var i = 1; i < mapPin2.length; i++) {
+      map.removeChild(mapPin2[i]);
+    }
+    window.filter(nearByAds);
   });
 
   noticeForm.addEventListener('submit', function (evt) {
