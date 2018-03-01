@@ -67,9 +67,9 @@
               k = element.offer.features.length;
               return true;
             }
-            return false;
           }
         }
+        return false;
       }
       return true;
     }
