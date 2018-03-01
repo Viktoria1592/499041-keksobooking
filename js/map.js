@@ -137,20 +137,22 @@
     var mapPin = document.querySelectorAll('.map__pin');
     var imgPin = map.querySelectorAll('img');
     var mapCard = document.querySelector('.map__card');
-    var activeElemsrc = activeElement.src.split('499041-keksobooking/');
-    for (var i = 0; i < nearByAds.length; i++) {
-      if (activeElemsrc[1] === nearByAds[i].author.avatar) {
+    if (activeElement.src !== undefined) {
+      var activeElemsrc = activeElement.src.split('499041-keksobooking/');
+      for (var i = 0; i < nearByAds.length; i++) {
+        if (activeElemsrc[1] === nearByAds[i].author.avatar) {
           if (mapCard !== null) {
             var sp1 = map.appendChild(window.card(nearByAds[i]));
-            console.log(sp1);
             map.replaceChild(sp1, mapCard);
           } else {
             map.appendChild(window.card(nearByAds[i]));
           }
-      } else if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
-        if (mapCard !== null) {
-          map.removeChild(mapCard);
-        }
+        } 
+      }
+    } 
+    if (activeElement.style === mapPin[0].style || activeElement.src === imgPin[0].src) {
+      if (mapCard !== null) {
+        map.removeChild(mapCard);
       }
     }
     mapCard = document.querySelector('.map__card');
